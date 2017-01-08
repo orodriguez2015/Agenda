@@ -1,0 +1,70 @@
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="80dp"
+    card_view:cardCornerRadius="2dp"
+    card_view:cardElevation="1dp"
+    card_view:contentPaddingRight="0dp"
+    card_view:contentPaddingLeft="0dp"
+    card_view:cardUseCompatPadding="true">
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="@style/TextAppearance.AppCompat.SearchResult.Title"
+            android:text="Nombre Evento"
+            android:id="@+id/titulo"
+
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:textIsSelectable="true"
+            android:fontFamily="sans-serif-smallcaps"
+            android:textColor="@android:color/holo_blue_dark"
+            android:textSize="14sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="Fecha"
+            android:id="@+id/fechaHora"
+            android:layout_below="@+id/titulo"
+            android:layout_alignLeft="@+id/titulo"
+            android:fontFamily="sans-serif"
+            android:textColor="@color/colorPrimary"
+            android:textSize="12sp" />
+
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/imgEditarEvento"
+            android:src="@android:drawable/ic_menu_edit"
+            android:background="@color/material_blue_grey_800"
+            android:layout_alignParentBottom="true"
+            android:layout_toLeftOf="@+id/imgBorrarEvento"
+            android:layout_toStartOf="@+id/imgBorrarEvento" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/imgBorrarEvento"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginLeft="5dp"
+            android:src="@android:drawable/ic_delete"
+            android:background="@color/material_blue_grey_800" />
+
+
+    </RelativeLayout>
+
+
+</android.support.v7.widget.CardView>
