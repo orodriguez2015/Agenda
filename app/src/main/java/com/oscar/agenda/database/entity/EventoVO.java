@@ -4,6 +4,7 @@ import android.text.TextUtils;
 
 import com.oscar.agenda.utils.DateOperations;
 
+import java.io.Serializable;
 import java.util.Calendar;
 
 /**
@@ -11,7 +12,7 @@ import java.util.Calendar;
  * Created by oscar on 19/11/16.
  */
 
-public class EventoVO {
+public class EventoVO implements Serializable {
 
     private Integer id;
     private String nombre;

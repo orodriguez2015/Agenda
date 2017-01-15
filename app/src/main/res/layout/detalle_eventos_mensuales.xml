@@ -7,7 +7,6 @@
     card_view:cardElevation="0dp"
     card_view:contentPaddingRight="0dp"
     card_view:contentPaddingLeft="0dp"
-    card_view:cardBackgroundColor="@color/green"
     card_view:cardUseCompatPadding="true">
 
     <RelativeLayout

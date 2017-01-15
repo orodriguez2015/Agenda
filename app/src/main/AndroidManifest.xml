@@ -23,7 +23,13 @@
             android:label="@string/title_activity_nuevo_evento2"
             android:parentActivityName="com.oscar.agenda.activities.WelcomeActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name="com.oscar.agenda.activities.CalendarioMensualActivity" />
+        <activity
+            android:name="com.oscar.agenda.activities.CalendarioMensualActivity"
+            android:parentActivityName="com.oscar.agenda.activities.WelcomeActivity" />
+        <activity
+            android:name="com.oscar.agenda.activities.EdicionDetalleActivity"
+            android:label="@string/title_activity_edicion_detalle"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

@@ -7,6 +7,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.KeyEvent;
+import android.view.View;
+import android.widget.TextView;
 
 import com.oscar.agenda.adapter.EventosMensualesAdapter;
 import com.oscar.agenda.database.asynctasks.GetEventosAsyncTask;
@@ -23,7 +25,6 @@ import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
 import com.prolificinteractive.materialcalendarview.OnMonthChangedListener;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -42,7 +43,7 @@ public class CalendarioMensualActivity extends AppCompatActivity {
     private RecyclerView recyclerEvents = null;
     private RecyclerView.LayoutManager lManager = null;
     private EventosMensualesAdapter adapter = null;
-
+    private TextView txtEventos = null;
     /**
      * onCreate
      * @param savedInstanceState Bundle
@@ -54,6 +55,9 @@ public class CalendarioMensualActivity extends AppCompatActivity {
 
         materialCalendarView = (MaterialCalendarView)findViewById(calendarView);
         materialCalendarView.setSelectionMode(MaterialCalendarView.SELECTION_MODE_MULTIPLE);
+
+        txtEventos = (TextView)findViewById(R.id.txtEventosDia);
+        txtEventos.setText("");
 
         // Se habilita la flecha que permite volver a la actividad desde la que se invocó a ésta
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -72,6 +76,16 @@ public class CalendarioMensualActivity extends AppCompatActivity {
         adapter = new EventosMensualesAdapter(new ArrayList<EventoVO>());
         recyclerEvents.setAdapter(adapter);
 
+
+        // Listener para detectar una selección de un elemento del adapter
+        adapter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int pos =  recyclerEvents.getChildAdapterPosition(view);
+                cargarDetalleEvento(adapter.getItems().get(pos));
+            }
+        });
+
         // Se marcan en el MaterialCalendarView los eventos existentes en el mes actual
         marcarEventosCalendario(DateOperations.getActualMonth());
 
@@ -80,20 +94,8 @@ public class CalendarioMensualActivity extends AppCompatActivity {
         materialCalendarView.setOnDateChangedListener(new OnDateSelectedListener() {
 
             public void onDateSelected(@NonNull MaterialCalendarView widget, @NonNull CalendarDay date, boolean selected) {
-                LogCat.debug("Se ha seleccionado una nueva fecha ");
-                LogCat.debug("dia " + date.getDay() + ", mes: " + date.getMonth() + ", year: " + date.getYear());
-
-                Calendar c = Calendar.getInstance();
-                c.clear();
-                c.set(Calendar.DAY_OF_MONTH,date.getDay());
-                c.set(Calendar.MONTH,date.getMonth());
-                c.set(Calendar.YEAR,date.getYear());
-
-                SimpleDateFormat sf = new SimpleDateFormat("dd/MM/yyyy");
-                LogCat.debug("fechaActivity: " + sf.format(c.getTime()));
-
                 // Se cargan los eventos del día seleccionado
-                getEventos(c);
+                getEventos(DateOperations.convert(date));
             }
         });
 
@@ -104,6 +106,19 @@ public class CalendarioMensualActivity extends AppCompatActivity {
                 LogCat.debug("Se ha cambiado de mes "  + date.getMonth());
             }
         });
+    }
+
+
+    /**
+     * Carga la actividad que muestra el detalle de un evento. Esta actividad
+     * también permite la edición del mismo
+     * @param evento EventoVO
+     */
+    private void cargarDetalleEvento(EventoVO evento) {
+
+        Intent intent = new Intent(CalendarioMensualActivity.this,EdicionDetalleActivity.class);
+        intent.putExtra("evento",evento);
+        startActivityForResult(intent,RESULT_OK);
     }
 
 
@@ -126,7 +141,12 @@ public class CalendarioMensualActivity extends AppCompatActivity {
             if(res.getStatus().equals(DatabaseErrors.OK)) {
                 eventos = res.getEventos();
 
-                LogCat.debug("eventos ===> " + eventos.size());
+                // Mensaje a mostrar en el caso de existir eventos
+                String mensaje = getString(R.string.noHayEventosDia) + " " + DateOperations.getFecha(fecha,DateOperations.FORMATO.DIA_MES_ANYO);
+                if(eventos.size()>0) {
+                    mensaje = getString(R.string.eventosDia) + " " + DateOperations.getFecha(fecha,DateOperations.FORMATO.DIA_MES_ANYO);
+                }
+                txtEventos.setText(mensaje);
 
                 // Se pasan los eventos al adapter
                 adapter.setItems(eventos);
@@ -190,26 +210,14 @@ public class CalendarioMensualActivity extends AppCompatActivity {
 
         } catch(Exception e) {
             e.printStackTrace();
-
         }
-
-        /*
-        Calendar nuevo = Calendar.getInstance();
-        nuevo.add(Calendar.DAY_OF_WEEK,2);
-
-        materialCalendarView.setDateSelected(fechaActual,true);
-        materialCalendarView.setDateSelected(nuevo,true);
-        */
     }
 
 
     private void marcarEventos() {
-
         for(int i=0;eventos!=null && i<eventos.size();i++) {
             materialCalendarView.setDateSelected(eventos.get(i).getFechaDesdeCalendar(), true);
-            //materialCalendarView.setSelectionColor(R.color.green);
         }
-
     }
 
 

@@ -142,7 +142,7 @@ public class SerieDBHelper extends SQLiteOpenHelper {
             LogCat.info("getEventos sFecha: " + sFecha);
 
             String sql = "select _id,nombre,fecha_desde,hora_desde,fecha_hasta,hora_hasta,fecha_publicacion,hora_publicacion,recordatorio_1,recordatorio_2,recordatorio_2 from evento ".
-                         concat("where fecha_desde='").concat(sFecha).concat("'").concat(" order by hora_desde desc,_id asc");
+                         concat("where fecha_desde='").concat(sFecha).concat("'").concat(" order by hora_desde asc,_id asc");
 
             LogCat.debug("sql: " + sql);
 

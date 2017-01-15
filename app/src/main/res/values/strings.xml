@@ -31,6 +31,8 @@
     <string name="fechaHastaObligatorio">Fecha hasta obligatorio</string>
     <string name="horaHastaObligatorio">Hora hasta obligatorio</string>
     <string name="calendarioMes">Calendario mes</string>
+    <string name="eventosDia">Eventos del día</string>
+    <string name="noHayEventosDia">No hay eventos disponibles el</string>
 
     <string name="pregunta_eliminar_evento">¿Desea eliminar el evento</string>
     <string name="err_unknown_event">Datos del evento desconocida</string>
@@ -228,6 +230,7 @@
     </string>
     <string name="title_evento_list">eventos</string>
     <string name="title_evento_detail">evento Detail</string>
+    <string name="title_activity_edicion_detalle">EdicionDetalleActivity</string>
 
 
 </resources>

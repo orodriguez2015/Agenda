@@ -1,5 +1,7 @@
 package com.oscar.agenda.utils;
 
+import com.prolificinteractive.materialcalendarview.CalendarDay;
+
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -242,6 +244,22 @@ public class DateOperations {
             salida = null;
         }
         return salida;
+    }
+
+
+    /**
+     * Obtiene un Calendar a partir de un objeto de la clase CaledarDay
+     * @param date CalendarDay
+     * @return Calendar
+     */
+    public static Calendar convert(CalendarDay date) {
+        Calendar c = Calendar.getInstance();
+
+        c.clear();
+        c.set(Calendar.DAY_OF_MONTH,date.getDay());
+        c.set(Calendar.MONTH,date.getMonth());
+        c.set(Calendar.YEAR,date.getYear());
+        return c;
     }
 
 }
