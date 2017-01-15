@@ -105,6 +105,23 @@ public class DateOperations {
 
 
     /**
+     * Devuelve el mes actual
+     * @return Integer
+     */
+    public static Integer getActualMonth() {
+        Integer month = null;
+
+        try {
+            month = Calendar.getInstance().get(Calendar.MONTH) + 1;
+
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+        return month;
+    }
+
+
+    /**
      * Obtiene un Calendar a partir de una fecha en formato String que se encuentra en formato
      * @param fecha String
      * @return

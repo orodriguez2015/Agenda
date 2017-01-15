@@ -17,16 +17,17 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.oscar.agenda.adapter.EventosAdapter;
+import com.oscar.agenda.database.asynctasks.GetEventosAsyncTask;
 import com.oscar.agenda.database.asynctasks.ParamsAsyncTask;
 import com.oscar.agenda.database.asynctasks.ResponseAsyncTask;
 import com.oscar.agenda.database.entity.EventoVO;
-import com.oscar.agenda.database.evento.GetEventosAsyncTask;
 import com.oscar.agenda.dialog.AlertDialogHelper;
 import com.oscar.agenda.utils.Constantes;
 import com.oscar.agenda.utils.LogCat;
 import com.oscar.agenda.utils.MessageUtils;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import agenda.oscar.com.agenda.R;
@@ -82,7 +83,7 @@ public class WelcomeActivity extends AppCompatActivity implements NavigationView
         });
 
 
-        cargarEventosHoy();
+        //cargarEventosHoy();
     }
 
 
@@ -93,6 +94,7 @@ public class WelcomeActivity extends AppCompatActivity implements NavigationView
 
         ParamsAsyncTask params = new ParamsAsyncTask();
         params.setContext(getApplicationContext());
+        params.setFecha(Calendar.getInstance());
 
         try {
             GetEventosAsyncTask task = new GetEventosAsyncTask();

@@ -6,6 +6,7 @@ import com.oscar.agenda.database.entity.EventoVO;
 import com.oscar.agenda.database.entity.SerieVO;
 
 import java.io.Serializable;
+import java.util.Calendar;
 
 
 /**
@@ -20,6 +21,7 @@ public class ParamsAsyncTask implements Serializable {
     private SerieVO serie    = null;
     private EventoVO evento  = null;
     private Integer mes = null;
+    private Calendar fecha = null;
 
     /**
      * Devuelve un mes
@@ -87,4 +89,20 @@ public class ParamsAsyncTask implements Serializable {
         this.serie = serie;
     }
 
+
+    /**
+     * Devuelve la fecha
+     * @return Calendar
+     */
+    public Calendar getFecha() {
+        return fecha;
+    }
+
+    /**
+     * Establecer fecha
+     * @param fecha Calendar
+     */
+    public void setFecha(Calendar fecha) {
+        this.fecha = fecha;
+    }
 }

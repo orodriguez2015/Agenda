@@ -48,6 +48,7 @@
     <string name="err_month_unknown">Mes desconocido</string>
     <string name="title_activity_nueva_serie">Nueva Serie</string>
     <string name="serie_grabada">La serie ha sido dada de alta correctamente</string>
+    <string name="err_get_eventos_fechaactual">Se ha producido un error al recuperar los eventos de la fecha seleccionada</string>
 
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>

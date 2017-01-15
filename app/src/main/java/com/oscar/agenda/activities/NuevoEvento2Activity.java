@@ -82,11 +82,7 @@ public class NuevoEvento2Activity extends AppCompatActivity {
 
         ViewCompat.setTransitionName(findViewById(R.id.app_bar),"");
 
-
-        // Título de la ventana
-        //setTitle(getString(R.string.eventoNuevo));
-
-      nombreEvento        = (EditText)findViewById(R.id.nombreEvento);
+        nombreEvento        = (EditText)findViewById(R.id.nombreEvento);
         fechaDesde          = (TextView)findViewById(R.id.fechaDesde);
         horaDesde           = (TextView)findViewById(R.id.horaDesde);
         fechaHasta          = (TextView)findViewById(R.id.fechaHasta);

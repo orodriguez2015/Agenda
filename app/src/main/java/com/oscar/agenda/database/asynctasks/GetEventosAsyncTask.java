@@ -1,10 +1,8 @@
-package com.oscar.agenda.database.evento;
+package com.oscar.agenda.database.asynctasks;
 
 import android.content.Context;
 import android.os.AsyncTask;
 
-import com.oscar.agenda.database.asynctasks.ParamsAsyncTask;
-import com.oscar.agenda.database.asynctasks.ResponseAsyncTask;
 import com.oscar.agenda.database.entity.SerieVO;
 import com.oscar.agenda.database.helper.SerieDBHelper;
 import com.oscar.agenda.exception.DatabaseException;
@@ -36,6 +34,8 @@ public class GetEventosAsyncTask extends AsyncTask<ParamsAsyncTask,Void,Response
         Integer status        = -1;
         String descStatus     = null;
         List<SerieVO> series  = null;
+        Calendar fecha = params[0].getFecha();
+
 
         if(context==null) {
             res.setStatus(1);
@@ -44,8 +44,8 @@ public class GetEventosAsyncTask extends AsyncTask<ParamsAsyncTask,Void,Response
 
             try {
                 SerieDBHelper helper = new SerieDBHelper(context);
-                // Se recuperan los eventos del día de hoy
-                res.setEventos(helper.getEventos(Calendar.getInstance()));
+                // Se recuperan los eventos cuya fecha desde sea una determinada
+                res.setEventos(helper.getEventos(fecha));
                 res.setStatus(0);
                 res.setDescStatus("OK");
 

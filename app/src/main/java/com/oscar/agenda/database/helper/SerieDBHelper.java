@@ -99,102 +99,6 @@ public class SerieDBHelper extends SQLiteOpenHelper {
 
 
     /**
-     * Recupera las noticias de la base de datos
-     * @return List<Noticia>
-     * @throws DatabaseException
-     */
-    public List<SerieVO> getSeries() throws DatabaseException {
-        List<SerieVO> series = new ArrayList<SerieVO>();
-        SQLiteDatabase db = null;
-        Cursor rs = null;
-
-        try {
-            LogCat.info("getSeries() init");
-            String sql = "select _id,titulo,descripcion,fechaPublicacion from serie order by titulo asc";
-            LogCat.debug("sql: " + sql);
-
-            db = getReadableDatabase();
-            rs = db.rawQuery(sql,null);
-
-            if(rs!=null && rs.getCount()>0 && rs.moveToFirst()) {
-                LogCat.debug("Numero series recuperadas: " + rs.getCount());
-
-                do {
-                    SerieVO serie = new SerieVO();
-                    serie.setId(rs.getInt(0));
-                    serie.setTitulo(rs.getString(1));
-                    serie.setDescripcion(rs.getString(2));
-                    serie.setFechaPublicacion(rs.getString(3));
-                    series.add(serie);
-
-                } while(rs.moveToNext());
-
-            } else
-                LogCat.debug("No existe el usuario");
-
-            LogCat.info("getSeries() end");
-
-        } catch(Exception e) {
-            e.printStackTrace();
-            throw new DatabaseException(DatabaseErrors.ERROR_RECUPERAR_SERIES,"Error al recuperar las series de la base de datos: ".concat(e.getMessage()));
-        } finally {
-            if(rs!=null) rs.close();
-            if(db!=null) db.close();
-        }
-        return series;
-    }
-
-    /**
-     * Graba una serie en la base de datos
-     * @param serie Objeto de la clase SerieVO a dar de alta en BD
-     */
-    public void saveSerie(SerieVO serie) throws DatabaseException {
-        SQLiteDatabase db = getWritableDatabase();
-
-        try {
-            LogCat.info("saveSerie init");
-            Long id = db.insert(ColumnasBD.SerieEntry.TABLE_NAME, null, ModelConversorUtil.toContentValues(serie));
-            serie.setId(id.intValue());
-            LogCat.info("saveSerie end");
-
-
-        } catch(Exception e) {
-            e.printStackTrace();
-            throw new DatabaseException(DatabaseErrors.ERROR_INSERTAR_SERIE,"Error al grabar la serie en la base de datos: ".concat(e.getMessage()));
-        } finally {
-            if(db!=null) {
-                db.close();
-            }
-        }
-    }
-
-
-
-    /**
-     * Elimina una serie de la base de datos
-     * @param serie SerieVO
-     */
-    public void deleteSerie(SerieVO serie) throws DatabaseException {
-        SQLiteDatabase db = getWritableDatabase();
-
-        try {
-            LogCat.info("deleteSerie init");
-            //db.delete(DATABASE_TABLE, KEY_NAME + "=" + name, null) > 0;
-            db.delete(ColumnasBD.SerieEntry.TABLE_NAME, ColumnasBD.SerieEntry._ID + "=" + serie.getId(), null);
-            LogCat.info("deleteSerie end");
-
-        } catch(Exception e) {
-            e.printStackTrace();
-            throw new DatabaseException(DatabaseErrors.ERROR_ELIMINAR_SERIE,"Error al eliminar la serie de id " + serie.getId() + " de la base de datos: " + e.getMessage());
-        } finally {
-            if(db!=null) {
-                db.close();
-            }
-        }
-    }
-
-
-    /**
      * Actualiza una determinada fuente/origen de datos en la base de datos
      * @param serie SerieVO
      */
@@ -235,6 +139,7 @@ public class SerieDBHelper extends SQLiteOpenHelper {
         try {
             LogCat.info("getEventos() init");
             sFecha = DateOperations.getFecha(fecha, DateOperations.FORMATO.DIA_MES_ANYO);
+            LogCat.info("getEventos sFecha: " + sFecha);
 
             String sql = "select _id,nombre,fecha_desde,hora_desde,fecha_hasta,hora_hasta,fecha_publicacion,hora_publicacion,recordatorio_1,recordatorio_2,recordatorio_2 from evento ".
                          concat("where fecha_desde='").concat(sFecha).concat("'").concat(" order by hora_desde desc,_id asc");
