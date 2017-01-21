@@ -8,10 +8,219 @@
     tools:context="com.oscar.agenda.activities.EdicionDetalleActivity"
     tools:showIn="@layout/activity_edicion_detalle">
 
-    <TextView
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_marginLeft="7dp"
+        android:layout_marginRight="7dp"
+        android:id="@+id/linear_layout"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/text_margin"
-        android:text="@string/large_text" />
+        android:orientation="vertical"
+        android:weightSum="1">
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bordeazul"
+            android:id="@+id/nombreEvento"
+            android:hint="@string/nombreEvento"
+            android:textSize="15dp"
+            android:layout_marginTop="7dp"
+            android:layout_weight="0.23"
+            android:paddingBottom="5dp"
+            android:paddingEnd="5dp"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:paddingTop="5dp"
+            android:fontFamily="sans-serif" />
+
+
+        <!-- Fecha y hora desde -->
+        <LinearLayout
+            android:layout_marginTop="15dp"
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentStart="true">
+
+            <TextView
+                android:layout_width="154dp"
+                android:id="@+id/labelFechaDesde"
+                android:layout_height="wrap_content"
+                android:text="@string/fechaDesde"
+                android:textStyle="bold"
+                android:textColor="@android:color/holo_blue_dark"
+                android:fontFamily="sans-serif-smallcaps"
+                android:layout_marginLeft="50sp" />
+
+            <TextView
+                android:layout_width="140dp"
+                android:id="@+id/labelHoraDesde"
+                android:layout_height="wrap_content"
+                android:text="@string/horaDesde"
+                android:textStyle="bold"
+                android:textColor="@android:color/holo_blue_dark"
+                android:fontFamily="sans-serif-smallcaps"/>
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_marginTop="15dp"
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentStart="true">
+
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.23"
+                android:textSize="12sp"
+                android:id="@+id/fechaDesde"
+                android:background="@drawable/bordeazul"
+                android:paddingBottom="5sp"
+                android:paddingEnd="5sp"
+                android:paddingLeft="5sp"
+                android:paddingRight="5sp"
+                android:paddingTop="5sp"
+                android:layout_marginLeft="0sp"
+                android:gravity="center"
+                />
+
+
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.23"
+                android:textSize="12sp"
+                android:id="@+id/horaDesde"
+                android:background="@drawable/bordeazul"
+                android:paddingBottom="5sp"
+                android:paddingEnd="5sp"
+                android:paddingLeft="5sp"
+                android:paddingRight="5sp"
+                android:paddingTop="5sp"
+                android:layout_marginLeft="5sp"
+                android:gravity="center"
+                />
+
+        </LinearLayout>
+
+
+        <!-- Fecha y hora hasta -->
+        <LinearLayout
+            android:layout_marginTop="15dp"
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentStart="true">
+
+            <TextView
+                android:layout_width="154dp"
+                android:id="@+id/labelFechaHasta"
+                android:layout_height="wrap_content"
+                android:text="@string/fechaHasta"
+                android:textStyle="bold"
+                android:textColor="@android:color/holo_blue_dark"
+                android:fontFamily="sans-serif-smallcaps"
+                android:layout_marginLeft="50sp" />
+
+            <TextView
+                android:layout_width="140dp"
+                android:id="@+id/labelHoraHasta"
+                android:layout_height="wrap_content"
+                android:text="@string/horaHasta"
+                android:textStyle="bold"
+                android:textColor="@android:color/holo_blue_dark"
+                android:fontFamily="sans-serif-smallcaps"/>
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_marginTop="15dp"
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentStart="true">
+
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.23"
+                android:textSize="12sp"
+                android:id="@+id/fechaHasta"
+                android:background="@drawable/bordeazul"
+                android:paddingBottom="5sp"
+                android:paddingEnd="5sp"
+                android:paddingLeft="5sp"
+                android:paddingRight="5sp"
+                android:paddingTop="5sp"
+                android:layout_marginLeft="0sp"
+                android:gravity="center"
+                />
+
+
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.23"
+                android:textSize="12sp"
+                android:id="@+id/horaHasta"
+                android:background="@drawable/bordeazul"
+                android:paddingBottom="5sp"
+                android:paddingEnd="5sp"
+                android:paddingLeft="5sp"
+                android:paddingRight="5sp"
+                android:paddingTop="5sp"
+                android:layout_marginLeft="5sp"
+                android:gravity="center"
+                />
+
+        </LinearLayout>
+
+
+        <RelativeLayout
+            android:layout_marginTop="15dp"
+            android:weightSum="1"
+            android:gravity="center_horizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content">
+
+
+            <Button
+                android:id="@+id/btnGrabarEvento"
+                style="?android:textAppearanceSmall"
+
+                android:layout_height="match_parent"
+                android:text="@string/btnGuardar"
+                android:textStyle="bold"
+                android:background="@drawable/boton"
+                android:layout_weight="0.31"
+                android:layout_width="101dp"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentStart="true"
+                android:layout_marginStart="0dp" />
+
+            <Button
+                android:id="@+id/btnCancelarEvento"
+                style="?android:textAppearanceSmall"
+                android:layout_width="101dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:text="@string/btnCancelar"
+                android:textStyle="bold"
+                android:background="@drawable/boton"
+                android:layout_weight="0.31"
+                android:layout_alignParentTop="true"
+                android:layout_toEndOf="@+id/btnGrabarEvento" />
+        </RelativeLayout>
+
+
+    </LinearLayout>
 
 </android.support.v4.widget.NestedScrollView>

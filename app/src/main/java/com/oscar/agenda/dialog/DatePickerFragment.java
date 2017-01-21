@@ -61,8 +61,6 @@ public class DatePickerFragment extends DialogFragment implements DatePickerDial
 
         if(this.objeto!=null && !TextUtils.isEmpty(((TextView)this.objeto).getText().toString())) {
             // Si hay una vista asociada, se obtiene la fecha del mismo y se muestra en el DatePickerDialog
-
-
             LogCat.debug(" Fecha que contiene el objeto: " + ((TextView)this.objeto).getText().toString());
 
             c = DateOperations.stringToCalendar(((TextView)this.objeto).getText().toString());

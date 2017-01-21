@@ -161,7 +161,7 @@ public class SerieDBHelper extends SQLiteOpenHelper {
                     evento.setHoraDesde(rs.getString(3));
                     evento.setFechaHasta(rs.getString(4));
                     evento.setHoraHasta(rs.getString(5));
-                    evento.setFechaHasta(rs.getString(6));
+                    evento.setFechaPublicacion(rs.getString(6));
                     evento.setRecordatorio1(rs.getString(7));
                     evento.setRecordatorio2(rs.getString(8));
                     evento.setRecordatorio3(rs.getString(9));

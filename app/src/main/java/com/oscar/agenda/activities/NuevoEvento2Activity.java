@@ -1,6 +1,5 @@
 package com.oscar.agenda.activities;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
@@ -10,7 +9,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -22,6 +20,7 @@ import com.oscar.agenda.database.entity.EventoVO;
 import com.oscar.agenda.dialog.AlertDialogHelper;
 import com.oscar.agenda.dialog.DatePickerFragment;
 import com.oscar.agenda.dialog.TimerPickerFragment;
+import com.oscar.agenda.utils.ActivityUtils;
 import com.oscar.agenda.utils.DateOperations;
 import com.oscar.agenda.utils.LogCat;
 
@@ -29,6 +28,10 @@ import java.util.Calendar;
 
 import agenda.oscar.com.agenda.R;
 
+/**
+ * Activity NuevoEvento2Activity que muestra la pantalla de alta de un nuevo evento en la agenda
+ * @author oscar
+ */
 public class NuevoEvento2Activity extends AppCompatActivity {
 
     private Button botonGrabarEvento = null;
@@ -92,7 +95,16 @@ public class NuevoEvento2Activity extends AppCompatActivity {
 
         // Se cargan los datos por defecto en el formulario de alta de evento
         cargarFormularioDefecto();
+        // Configurar los listener sobre los componentes de la vista de alta de evento
+        configurarListener();
+    }
 
+
+    /**
+     * Método que se encarga de configurar los listener sobre los componentes del
+     * formulario de edición de un evento
+     */
+    private void configurarListener() {
         /**
          * Evento onClick sobre el botón de grabar
          */
@@ -113,7 +125,7 @@ public class NuevoEvento2Activity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // Ocultar el teclado
-                closeSoftKeyBoard();
+                ActivityUtils.closeSoftKeyBoard(NuevoEvento2Activity.this);
                 finish();
             }
         });
@@ -126,7 +138,7 @@ public class NuevoEvento2Activity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // Ocultar el teclado
-                closeSoftKeyBoard();
+                ActivityUtils.closeSoftKeyBoard(NuevoEvento2Activity.this);
                 lanzarDatePickerFragment(fechaDesde);
             }
         });
@@ -139,7 +151,7 @@ public class NuevoEvento2Activity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // Ocultar el teclado
-                closeSoftKeyBoard();
+                ActivityUtils.closeSoftKeyBoard(NuevoEvento2Activity.this);
                 lanzarTimePickerFragment(horaDesde);
             }
         });
@@ -151,7 +163,7 @@ public class NuevoEvento2Activity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // Ocultar el teclado
-                closeSoftKeyBoard();
+                ActivityUtils.closeSoftKeyBoard(NuevoEvento2Activity.this);
                 lanzarDatePickerFragment(fechaHasta);
             }
         });
@@ -164,13 +176,12 @@ public class NuevoEvento2Activity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // Ocultar el teclado
-                closeSoftKeyBoard();
+                ActivityUtils.closeSoftKeyBoard(NuevoEvento2Activity.this);
                 lanzarTimePickerFragment(horaHasta);
             }
         });
-
-
     }
+
 
 
     /**
@@ -306,15 +317,6 @@ public class NuevoEvento2Activity extends AppCompatActivity {
     private void lanzarTimePickerFragment(TextView textView) {
         TimerPickerFragment newFragment = new TimerPickerFragment(textView);
         newFragment.show(getFragmentManager(), "timePicker");
-    }
-
-
-    /**
-     * Método que cierra el teclado en caso de estar abierto
-     */
-    public void closeSoftKeyBoard() {
-        InputMethodManager inputMethodManager = (InputMethodManager) this.getSystemService(Context.INPUT_METHOD_SERVICE);
-        inputMethodManager.hideSoftInputFromWindow(this.getCurrentFocus().getWindowToken(), 0);
     }
 
 }

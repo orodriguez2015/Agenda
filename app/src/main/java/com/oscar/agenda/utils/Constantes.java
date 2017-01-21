@@ -10,4 +10,6 @@ public class Constantes {
     public final static int NUEVA_SERIE_ALTA = 0;
     public final static int EDICION_SERIE    = 1;
     public final static int NUEVO_EVENTO     = 2;
+
+    public final static String PARAM_EVENTO_INTENT = "evento";
 }
