@@ -18,6 +18,7 @@ import com.oscar.agenda.database.asynctasks.ResponseAsyncTask;
 import com.oscar.agenda.database.entity.EventoVO;
 import com.oscar.agenda.database.helper.DatabaseErrors;
 import com.oscar.agenda.dialog.AlertDialogHelper;
+import com.oscar.agenda.utils.Constantes;
 import com.oscar.agenda.utils.DateOperations;
 import com.oscar.agenda.utils.LogCat;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
@@ -35,6 +36,7 @@ import static agenda.oscar.com.agenda.R.id.calendarView;
 
 /**
  * Actividad que muestra el calendario mensual de eventos
+ * @author oscar
  */
 public class CalendarioMensualActivity extends AppCompatActivity {
     // Objeto que muestra el calendario
@@ -44,6 +46,8 @@ public class CalendarioMensualActivity extends AppCompatActivity {
     private RecyclerView.LayoutManager lManager = null;
     private EventosMensualesAdapter adapter = null;
     private TextView txtEventos = null;
+    private Calendar fechaSeleccionada = null;
+
     /**
      * onCreate
      * @param savedInstanceState Bundle
@@ -88,17 +92,25 @@ public class CalendarioMensualActivity extends AppCompatActivity {
 
         // Se marcan en el MaterialCalendarView los eventos existentes en el mes actual
         marcarEventosCalendario(DateOperations.getActualMonth());
+        // Configuración de los listener
+        configurarListener();
+    }
 
+
+    /**
+     * Configura los listener sobre los componentes de la interfaz de usuario
+     */
+    private void configurarListener() {
 
         // Se detecta si hay un cambio de fecha, hay que recuperar los eventos de ese día
         materialCalendarView.setOnDateChangedListener(new OnDateSelectedListener() {
 
             public void onDateSelected(@NonNull MaterialCalendarView widget, @NonNull CalendarDay date, boolean selected) {
                 // Se cargan los eventos del día seleccionado
-                getEventos(DateOperations.convert(date));
+                CalendarioMensualActivity.this.fechaSeleccionada = DateOperations.convert(date);
+                getEventos(CalendarioMensualActivity.this.fechaSeleccionada);
             }
         });
-
 
         materialCalendarView.setOnMonthChangedListener(new OnMonthChangedListener() {
             @Override
@@ -115,10 +127,9 @@ public class CalendarioMensualActivity extends AppCompatActivity {
      * @param evento EventoVO
      */
     private void cargarDetalleEvento(EventoVO evento) {
-
         Intent intent = new Intent(CalendarioMensualActivity.this,EdicionDetalleActivity.class);
         intent.putExtra("evento",evento);
-        startActivityForResult(intent,RESULT_OK);
+        startActivityForResult(intent,Constantes.EDITAR_EVENTO);
     }
 
 
@@ -257,5 +268,30 @@ public class CalendarioMensualActivity extends AppCompatActivity {
         setResult(RESULT_OK, data);
         onBackPressed();
     }
+
+
+    /**
+     * Método que es invocado cuando un activity secundaria invocada a través de un Intent, devuelve una respuesta
+     * a esta activity
+     * @param requestCode int
+     * @param resultCode int
+     * @param data Intent
+     */
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(resultCode==RESULT_OK) {
+
+            switch (requestCode) {
+                case Constantes.EDITAR_EVENTO: {
+                    // Recargar los eventos del día seleccionado por el usuario
+                    getEventos(this.fechaSeleccionada);
+                    break;
+                }
+
+            }// switch
+        }
+    }
+
+
 
 }

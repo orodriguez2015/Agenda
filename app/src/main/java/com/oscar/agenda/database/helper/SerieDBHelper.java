@@ -293,8 +293,29 @@ public class SerieDBHelper extends SQLiteOpenHelper {
     }
 
 
+    /**
+     * Actualiza un determinado evento en la base de datos
+     * @param evento EventoVO
+     */
+    public void updateEvento(EventoVO evento) throws DatabaseException {
+        SQLiteDatabase db = getWritableDatabase();
 
+        try {
+            LogCat.info("updateEvento init");
+            String[] paramsWhere = {evento.getId().toString()};
+            db.update(ColumnasBD.AgendaEntry.TABLE_NAME, ModelConversorUtil.toContentValues(evento),"_id=?",paramsWhere);
 
+            LogCat.info("updateEvento end");
+
+        } catch(Exception e) {
+            e.printStackTrace();
+            throw new DatabaseException(DatabaseErrors.ERROR_ACTUALIZAR_EVENTO,"Error al actualizar el evento en la base de datos: " + e.getMessage());
+        } finally {
+            if(db!=null) {
+                db.close();
+            }
+        }
+    }
 
 
 }

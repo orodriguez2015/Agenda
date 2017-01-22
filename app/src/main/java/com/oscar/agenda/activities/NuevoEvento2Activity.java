@@ -18,8 +18,6 @@ import com.oscar.agenda.database.asynctasks.ResponseAsyncTask;
 import com.oscar.agenda.database.asynctasks.SaveEventAsyncTask;
 import com.oscar.agenda.database.entity.EventoVO;
 import com.oscar.agenda.dialog.AlertDialogHelper;
-import com.oscar.agenda.dialog.DatePickerFragment;
-import com.oscar.agenda.dialog.TimerPickerFragment;
 import com.oscar.agenda.utils.ActivityUtils;
 import com.oscar.agenda.utils.DateOperations;
 import com.oscar.agenda.utils.LogCat;
@@ -139,7 +137,7 @@ public class NuevoEvento2Activity extends AppCompatActivity {
             public void onClick(View v) {
                 // Ocultar el teclado
                 ActivityUtils.closeSoftKeyBoard(NuevoEvento2Activity.this);
-                lanzarDatePickerFragment(fechaDesde);
+                ActivityUtils.lanzarDatePickerFragment(NuevoEvento2Activity.this,fechaDesde);
             }
         });
 
@@ -152,7 +150,7 @@ public class NuevoEvento2Activity extends AppCompatActivity {
             public void onClick(View v) {
                 // Ocultar el teclado
                 ActivityUtils.closeSoftKeyBoard(NuevoEvento2Activity.this);
-                lanzarTimePickerFragment(horaDesde);
+                ActivityUtils.lanzarTimePickerFragment(NuevoEvento2Activity.this,horaDesde);
             }
         });
 
@@ -164,7 +162,7 @@ public class NuevoEvento2Activity extends AppCompatActivity {
             public void onClick(View v) {
                 // Ocultar el teclado
                 ActivityUtils.closeSoftKeyBoard(NuevoEvento2Activity.this);
-                lanzarDatePickerFragment(fechaHasta);
+                ActivityUtils.lanzarDatePickerFragment(NuevoEvento2Activity.this,fechaHasta);
             }
         });
 
@@ -177,7 +175,7 @@ public class NuevoEvento2Activity extends AppCompatActivity {
             public void onClick(View v) {
                 // Ocultar el teclado
                 ActivityUtils.closeSoftKeyBoard(NuevoEvento2Activity.this);
-                lanzarTimePickerFragment(horaHasta);
+                ActivityUtils.lanzarTimePickerFragment(NuevoEvento2Activity.this,horaHasta);
             }
         });
     }
@@ -298,25 +296,4 @@ public class NuevoEvento2Activity extends AppCompatActivity {
             }
         }
     }
-
-
-    /**
-     * Lanza el fragment que muestra un DatePickerDialog
-     * @param textView TextView
-     */
-    private void lanzarDatePickerFragment(TextView textView) {
-        DatePickerFragment newFragment = new DatePickerFragment(textView);
-        newFragment.show(getFragmentManager(), "datePicker");
-    }
-
-
-    /**
-     * Lanza el fragment que muestra un TimePickerFragment
-     * @param textView TextView
-     */
-    private void lanzarTimePickerFragment(TextView textView) {
-        TimerPickerFragment newFragment = new TimerPickerFragment(textView);
-        newFragment.show(getFragmentManager(), "timePicker");
-    }
-
 }

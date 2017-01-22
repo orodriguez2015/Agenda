@@ -5,14 +5,14 @@ import android.content.Context;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
 
+import com.oscar.agenda.dialog.AlertDialogHelper;
 import com.oscar.agenda.dialog.DatePickerFragment;
 import com.oscar.agenda.dialog.TimerPickerFragment;
 
 /**
- * Clase ActivityUtils
+ * Clase ActivityUtils con operaciones que pueden ser utilizadas desde una activity
  * Created by oscar on 21/01/17.
  */
-
 public class ActivityUtils {
 
     /**
@@ -44,6 +44,16 @@ public class ActivityUtils {
     public static void lanzarTimePickerFragment(Activity activity,TextView textView) {
         TimerPickerFragment newFragment = new TimerPickerFragment(textView);
         newFragment.show(activity.getFragmentManager(), "timePicker");
+    }
+
+    /**
+     * Muestra un AlertDialog con un determinado mensaje
+     * @param contexto Context
+     * @param titulo String con el título
+     * @param mensaje String con el mensaje
+     */
+    public static void mostrarMensajeAdvertencia(Context contexto,String titulo,String mensaje) {
+        AlertDialogHelper.crearDialogoAlertaAdvertencia(contexto,titulo,mensaje).show();
     }
 
 }

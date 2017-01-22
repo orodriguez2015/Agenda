@@ -19,5 +19,5 @@ public class DatabaseErrors {
     public static final int ERROR_INSERTAR_EVENTO       = 8;
     public static final int ERROR_ELIMINAR_EVENTO       = 9;
     public static final int ERROR_RECUPERAR_EVENTOS_MES = 10;
-
+    public static final int ERROR_ACTUALIZAR_EVENTO     = 11;
 }

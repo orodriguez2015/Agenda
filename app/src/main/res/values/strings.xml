@@ -41,6 +41,8 @@
     <string name="err_fecha_hasta_anterior_desde">La fecha hasta no puede ser anterior a la fecha desde</string>
 
     <string name="err_grabar_evento_bbdd">Error al grabar el evento en BBDD</string>
+    <string name="err_editar_evento_bbdd">Error al editar el evento en BBDD</string>
+
     <string name="err_get_series_bbdd">Error al recuperar las series de TV de la BBDD</string>
     <string name="err_delete_evento">Se ha producido un error al eliminar el evento</string>
     <string name="err_serie_desconocida">Serie desconocida. Intentelo de nuevo.</string>
