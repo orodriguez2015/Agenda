@@ -3,6 +3,7 @@ package com.oscar.agenda.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -17,6 +18,7 @@ import com.oscar.agenda.database.asynctasks.ParamsAsyncTask;
 import com.oscar.agenda.database.asynctasks.ResponseAsyncTask;
 import com.oscar.agenda.database.entity.EventoVO;
 import com.oscar.agenda.database.helper.DatabaseErrors;
+import com.oscar.agenda.decorator.DecoratorEventDay;
 import com.oscar.agenda.dialog.AlertDialogHelper;
 import com.oscar.agenda.utils.Constantes;
 import com.oscar.agenda.utils.DateOperations;
@@ -94,6 +96,8 @@ public class CalendarioMensualActivity extends AppCompatActivity {
         marcarEventosCalendario(DateOperations.getActualMonth());
         // Configuración de los listener
         configurarListener();
+
+        addDecoradorMaterialCalendarView();
     }
 
 
@@ -102,6 +106,7 @@ public class CalendarioMensualActivity extends AppCompatActivity {
      */
     private void configurarListener() {
 
+        materialCalendarView.setSelectionColor(ContextCompat.getColor(getApplicationContext(),R.color.colorPrimaryDark));
         // Se detecta si hay un cambio de fecha, hay que recuperar los eventos de ese día
         materialCalendarView.setOnDateChangedListener(new OnDateSelectedListener() {
 
@@ -118,6 +123,11 @@ public class CalendarioMensualActivity extends AppCompatActivity {
                 LogCat.debug("Se ha cambiado de mes "  + date.getMonth());
             }
         });
+    }
+
+
+    private void addDecoradorMaterialCalendarView() {
+        materialCalendarView.addDecorator(new DecoratorEventDay(getApplicationContext(),this.eventos));
     }
 
 
@@ -199,7 +209,7 @@ public class CalendarioMensualActivity extends AppCompatActivity {
                 case 0: {
                     // Se ha recuperado los eventos de la BBDD
                     eventos = response.getEventos();
-                    marcarEventos();
+                    //marcarEventosCalendario();
                     break;
                 }
 
@@ -221,11 +231,15 @@ public class CalendarioMensualActivity extends AppCompatActivity {
 
         } catch(Exception e) {
             e.printStackTrace();
+            mostrarMensajeAdvertencia(getString(R.string.err_get_events_month));
         }
     }
 
 
-    private void marcarEventos() {
+    /**
+     * Se marca en el MaterialCalendarView los días en los que hay eventos
+     */
+    private void marcarEventosCalendario() {
         for(int i=0;eventos!=null && i<eventos.size();i++) {
             materialCalendarView.setDateSelected(eventos.get(i).getFechaDesdeCalendar(), true);
         }
