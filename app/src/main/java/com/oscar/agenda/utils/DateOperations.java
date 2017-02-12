@@ -1,5 +1,6 @@
 package com.oscar.agenda.utils;
 
+import com.oscar.agenda.utils.log.LogCat;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 
 import java.text.SimpleDateFormat;

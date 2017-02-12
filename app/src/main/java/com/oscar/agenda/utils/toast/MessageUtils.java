@@ -1,4 +1,4 @@
-package com.oscar.agenda.utils;
+package com.oscar.agenda.utils.toast;
 
 import android.content.Context;
 import android.widget.Toast;

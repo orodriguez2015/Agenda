@@ -12,11 +12,13 @@
             android:name="com.oscar.agenda.activities.WelcomeActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
         </activity>
         <activity
             android:name="com.oscar.agenda.activities.NuevoEvento2Activity"
@@ -24,13 +26,27 @@
             android:parentActivityName="com.oscar.agenda.activities.WelcomeActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name="com.oscar.agenda.activities.CalendarioMensualActivity"
-            android:parentActivityName="com.oscar.agenda.activities.WelcomeActivity" />
+            android:name="com.oscar.agenda.activities.CalendarioMensualActivity">
+            <!--
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+            -->
+        </activity>
+
         <activity
             android:name="com.oscar.agenda.activities.EdicionDetalleActivity"
             android:parentActivityName="com.oscar.agenda.activities.CalendarioMensualActivity"
             android:label="@string/title_activity_edicion_detalle"
             android:theme="@style/AppTheme.NoActionBar"></activity>
+
+
+        <!-- Declaración de servicios -->
+        <service android:name="com.oscar.agenda.services.NotificacionEventoService"></service>
+
+
     </application>
 
 </manifest>

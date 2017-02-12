@@ -11,7 +11,7 @@ import android.widget.DatePicker;
 import android.widget.TextView;
 
 import com.oscar.agenda.utils.DateOperations;
-import com.oscar.agenda.utils.LogCat;
+import com.oscar.agenda.utils.log.LogCat;
 
 import java.util.Calendar;
 

@@ -18,7 +18,7 @@ import com.oscar.agenda.database.entity.EventoVO;
 import com.oscar.agenda.utils.ActivityUtils;
 import com.oscar.agenda.utils.Constantes;
 import com.oscar.agenda.utils.DateOperations;
-import com.oscar.agenda.utils.LogCat;
+import com.oscar.agenda.utils.log.LogCat;
 
 import java.util.Calendar;
 
@@ -75,7 +75,8 @@ public class EdicionDetalleActivity extends AppCompatActivity {
     }
 
     /**
-     * Método que se encarga de cargar el evento seleccionado por el usuario en el formulario de la activity
+     * Método que se encarga de cargar el evento seleccionado por el usuario en el formulario de la activity.
+     * Se envía en un Intent un objeto EventoVO cuyo nombre está definido en Constantes.PARAM_EVENTO_INTENT
      */
     private void cargarEvento() {
         Bundle bundle   = getIntent().getExtras();

@@ -2,7 +2,7 @@ package com.oscar.agenda.utils.listener.api;
 
 import android.content.DialogInterface;
 
-import com.oscar.agenda.utils.LogCat;
+import com.oscar.agenda.utils.log.LogCat;
 
 
 /**

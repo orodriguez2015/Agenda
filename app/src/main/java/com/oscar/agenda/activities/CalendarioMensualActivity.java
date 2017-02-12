@@ -22,7 +22,7 @@ import com.oscar.agenda.decorator.DecoratorEventDay;
 import com.oscar.agenda.dialog.AlertDialogHelper;
 import com.oscar.agenda.utils.Constantes;
 import com.oscar.agenda.utils.DateOperations;
-import com.oscar.agenda.utils.LogCat;
+import com.oscar.agenda.utils.log.LogCat;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
@@ -66,8 +66,8 @@ public class CalendarioMensualActivity extends AppCompatActivity {
         txtEventos.setText("");
 
         // Se habilita la flecha que permite volver a la actividad desde la que se invocó a ésta
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        //getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         // Se obtiene el RecyclerView en el que se mostrarán los eventos de una determinada fecha que ha sido
         // seleccionada por le usuario en el MaterialCalendarView

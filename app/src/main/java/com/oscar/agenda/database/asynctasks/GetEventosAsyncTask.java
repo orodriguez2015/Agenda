@@ -4,7 +4,7 @@ import android.content.Context;
 import android.os.AsyncTask;
 
 import com.oscar.agenda.database.entity.SerieVO;
-import com.oscar.agenda.database.helper.SerieDBHelper;
+import com.oscar.agenda.database.helper.EventHelper;
 import com.oscar.agenda.exception.DatabaseException;
 
 import java.util.Calendar;
@@ -43,7 +43,7 @@ public class GetEventosAsyncTask extends AsyncTask<ParamsAsyncTask,Void,Response
         } else {
 
             try {
-                SerieDBHelper helper = new SerieDBHelper(context);
+                EventHelper helper = new EventHelper(context);
                 // Se recuperan los eventos cuya fecha desde sea una determinada
                 res.setEventos(helper.getEventos(fecha));
                 res.setStatus(0);

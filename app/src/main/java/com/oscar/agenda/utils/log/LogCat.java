@@ -1,4 +1,4 @@
-package com.oscar.agenda.utils;
+package com.oscar.agenda.utils.log;
 
 import android.util.Log;
 

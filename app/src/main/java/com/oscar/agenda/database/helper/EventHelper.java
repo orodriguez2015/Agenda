@@ -7,21 +7,20 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import com.oscar.agenda.database.colums.ColumnasBD;
 import com.oscar.agenda.database.entity.EventoVO;
-import com.oscar.agenda.database.entity.SerieVO;
 import com.oscar.agenda.exception.DatabaseException;
 import com.oscar.agenda.utils.DateOperations;
-import com.oscar.agenda.utils.LogCat;
+import com.oscar.agenda.utils.log.LogCat;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
 /**
- * Clase SerieDBHelper encargada de crear la base de datos SQLite y de actualizarla
+ * Clase EventHelper encargada de crear la base de datos SQLite y de actualizarla
  * cuando sea preciso. Contiene operaciones de utiliza
  * Created by oscar on 05/11/16.
  */
-public class SerieDBHelper extends SQLiteOpenHelper {
+public class EventHelper extends SQLiteOpenHelper {
 
     public static final int DATABASE_VERSION = 1;
     public static final String DATABASE_NAME = "AppyNews.db";
@@ -30,7 +29,7 @@ public class SerieDBHelper extends SQLiteOpenHelper {
      * Constructor
      * @param context: Objeto de la clase Context
      */
-    public SerieDBHelper(Context context) {
+    public EventHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
@@ -96,32 +95,6 @@ public class SerieDBHelper extends SQLiteOpenHelper {
         LogCat.debug("onUpgrade init");
         LogCat.debug("onUpgrade end");
     }
-
-
-    /**
-     * Actualiza una determinada fuente/origen de datos en la base de datos
-     * @param serie SerieVO
-     */
-    public void updateSerie(SerieVO serie) throws DatabaseException {
-        SQLiteDatabase db = getWritableDatabase();
-
-        try {
-            LogCat.info("updateSerie init");
-            String[] paramsWhere = {serie.getId().toString()};
-            db.update(ColumnasBD.SerieEntry.TABLE_NAME, ModelConversorUtil.toContentValues(serie),"_id=?",paramsWhere);
-
-            LogCat.info("updateSerie end");
-
-        } catch(Exception e) {
-            e.printStackTrace();
-            throw new DatabaseException(DatabaseErrors.ERROR_ACTUALIZAR_SERIE,"Error al actualizar la serie en la base de datos: " + e.getMessage());
-        } finally {
-            if(db!=null) {
-                db.close();
-            }
-        }
-    }
-
 
 
     /**

@@ -22,9 +22,10 @@ import com.oscar.agenda.database.asynctasks.ParamsAsyncTask;
 import com.oscar.agenda.database.asynctasks.ResponseAsyncTask;
 import com.oscar.agenda.database.entity.EventoVO;
 import com.oscar.agenda.dialog.AlertDialogHelper;
+import com.oscar.agenda.services.NotificacionEventoService;
 import com.oscar.agenda.utils.Constantes;
-import com.oscar.agenda.utils.LogCat;
-import com.oscar.agenda.utils.MessageUtils;
+import com.oscar.agenda.utils.log.LogCat;
+import com.oscar.agenda.utils.toast.MessageUtils;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -82,10 +83,19 @@ public class WelcomeActivity extends AppCompatActivity implements NavigationView
             }
         });
 
-
+        lanzarServicio();
         //cargarEventosHoy();
     }
 
+
+    /**
+     * Lanza el servicio de notificaciones una vez cargada la actividad
+     */
+    private void lanzarServicio() {
+
+        startService(new Intent(this,NotificacionEventoService.class));
+
+    }
 
     /**
      * Carga en el Activity los eventos recuperados del día de hoy

@@ -3,7 +3,7 @@ package com.oscar.agenda.database.asynctasks;
 import android.content.Context;
 import android.os.AsyncTask;
 
-import com.oscar.agenda.database.helper.SerieDBHelper;
+import com.oscar.agenda.database.helper.EventHelper;
 import com.oscar.agenda.exception.DatabaseException;
 
 import agenda.oscar.com.agenda.R;
@@ -44,7 +44,7 @@ public class GetEventosMesAsyncTask extends AsyncTask<ParamsAsyncTask,Void,Respo
         else {
 
             try {
-                SerieDBHelper helper = new SerieDBHelper(context);
+                EventHelper helper = new EventHelper(context);
                 // Se recuperan los eventos del día de hoy
                 res.setEventos(helper.getEventosMes(mes));
                 res.setStatus(0);

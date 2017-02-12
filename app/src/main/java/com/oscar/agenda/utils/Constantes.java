@@ -12,4 +12,6 @@ public class Constantes {
     public final static int NUEVO_EVENTO     = 2;
     public final static int EDITAR_EVENTO    = 3;
     public final static String PARAM_EVENTO_INTENT = "evento";
+
+    public final static Integer INTERVAL_TIMER_EVENT_NOTIFICATION = 60000;
 }

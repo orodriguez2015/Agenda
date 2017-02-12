@@ -4,7 +4,7 @@ import android.content.Context;
 import android.os.AsyncTask;
 
 import com.oscar.agenda.database.entity.EventoVO;
-import com.oscar.agenda.database.helper.SerieDBHelper;
+import com.oscar.agenda.database.helper.EventHelper;
 import com.oscar.agenda.exception.DatabaseException;
 
 import agenda.oscar.com.agenda.R;
@@ -42,7 +42,7 @@ public class DeleteEventoAsyncTask extends AsyncTask<ParamsAsyncTask,Void,Respon
         else {
 
             try {
-                SerieDBHelper helper = new SerieDBHelper(context);
+                EventHelper helper = new EventHelper(context);
                 helper.deleteEvento(evento);
 
                 res.setStatus(0);

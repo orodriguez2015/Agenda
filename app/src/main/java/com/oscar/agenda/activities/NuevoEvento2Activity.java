@@ -20,7 +20,7 @@ import com.oscar.agenda.database.entity.EventoVO;
 import com.oscar.agenda.dialog.AlertDialogHelper;
 import com.oscar.agenda.utils.ActivityUtils;
 import com.oscar.agenda.utils.DateOperations;
-import com.oscar.agenda.utils.LogCat;
+import com.oscar.agenda.utils.log.LogCat;
 
 import java.util.Calendar;
 
