@@ -5,9 +5,9 @@ import android.content.Intent;
 
 import com.oscar.agenda.activities.EdicionDetalleActivity;
 import com.oscar.agenda.utils.Constantes;
-import com.oscar.agenda.utils.log.LogCat;
-import com.oscar.agenda.utils.notification.NotificacionInfo;
-import com.oscar.agenda.utils.notification.NotificationUtils;
+import com.oscar.libutilities.utils.log.LogCat;
+import com.oscar.libutilities.utils.notification.NotificacionInfo;
+import com.oscar.libutilities.utils.notification.NotificationUtils;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -41,6 +41,8 @@ public class NotificacionEventoService extends IntentService {
 
             Intent intentDestino = new Intent(getApplicationContext(), EdicionDetalleActivity.class);
             NotificacionInfo info = new NotificacionInfo("Titulo","Tienes que ir a cargar",getApplicationContext(),intentDestino);
+            info.setIcon(android.R.mipmap.sym_def_app_icon);
+            
             NotificationUtils.sendNotification(info);
             //sendNotification();
             sendNotificationPerEvent();
@@ -57,6 +59,7 @@ public class NotificacionEventoService extends IntentService {
         } catch(Exception e) {
             e.printStackTrace();
         }
+
 
         LogCat.debug("NotificacionEventoService.onHandleIntent <====");
     }

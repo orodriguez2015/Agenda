@@ -5,7 +5,7 @@ import android.content.Context;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
 
-import com.oscar.agenda.dialog.AlertDialogHelper;
+import com.oscar.libutilities.utils.dialog.AlertDialogHelper;
 import com.oscar.agenda.dialog.DatePickerFragment;
 import com.oscar.agenda.dialog.TimerPickerFragment;
 

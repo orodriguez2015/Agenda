@@ -4,8 +4,8 @@ import android.content.Context;
 import android.support.v4.content.ContextCompat;
 
 import com.oscar.agenda.database.entity.EventoVO;
-import com.oscar.agenda.utils.DateOperations;
 import com.oscar.agenda.utils.EventosUtils;
+import com.oscar.agenda.utils.date.CalendarDayOperations;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.DayViewDecorator;
 import com.prolificinteractive.materialcalendarview.DayViewFacade;
@@ -42,7 +42,7 @@ public class DecoratorEventDay implements DayViewDecorator {
      */
     @Override
     public boolean shouldDecorate(CalendarDay day) {
-        return mapEventos.containsKey(DateOperations.convert(day));
+        return mapEventos.containsKey(CalendarDayOperations.convert(day));
     }
 
 

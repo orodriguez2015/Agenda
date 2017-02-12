@@ -21,10 +21,10 @@ import com.oscar.agenda.database.asynctasks.GetEventosAsyncTask;
 import com.oscar.agenda.database.asynctasks.ParamsAsyncTask;
 import com.oscar.agenda.database.asynctasks.ResponseAsyncTask;
 import com.oscar.agenda.database.entity.EventoVO;
-import com.oscar.agenda.dialog.AlertDialogHelper;
+import com.oscar.libutilities.utils.dialog.AlertDialogHelper;
 import com.oscar.agenda.services.NotificacionEventoService;
 import com.oscar.agenda.utils.Constantes;
-import com.oscar.agenda.utils.log.LogCat;
+import com.oscar.libutilities.utils.log.LogCat;
 import com.oscar.agenda.utils.toast.MessageUtils;
 
 import java.util.ArrayList;

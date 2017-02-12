@@ -10,7 +10,7 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
-import com.oscar.agenda.utils.DateOperations;
+import com.oscar.libutilities.utils.date.DateOperations;
 
 import java.util.Calendar;
 

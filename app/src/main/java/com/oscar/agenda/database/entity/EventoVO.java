@@ -2,7 +2,7 @@ package com.oscar.agenda.database.entity;
 
 import android.text.TextUtils;
 
-import com.oscar.agenda.utils.DateOperations;
+import com.oscar.libutilities.utils.date.DateOperations;
 
 import java.io.Serializable;
 import java.util.Calendar;

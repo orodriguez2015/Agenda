@@ -8,8 +8,8 @@ import android.database.sqlite.SQLiteOpenHelper;
 import com.oscar.agenda.database.colums.ColumnasBD;
 import com.oscar.agenda.database.entity.EventoVO;
 import com.oscar.agenda.exception.DatabaseException;
-import com.oscar.agenda.utils.DateOperations;
-import com.oscar.agenda.utils.log.LogCat;
+import com.oscar.libutilities.utils.log.LogCat;
+import com.oscar.libutilities.utils.date.DateOperations;
 
 import java.util.ArrayList;
 import java.util.Calendar;

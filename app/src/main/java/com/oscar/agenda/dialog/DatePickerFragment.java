@@ -10,8 +10,8 @@ import android.view.View;
 import android.widget.DatePicker;
 import android.widget.TextView;
 
-import com.oscar.agenda.utils.DateOperations;
-import com.oscar.agenda.utils.log.LogCat;
+import com.oscar.libutilities.utils.log.LogCat;
+import com.oscar.libutilities.utils.date.DateOperations;
 
 import java.util.Calendar;
 

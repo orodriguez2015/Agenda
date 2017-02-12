@@ -19,10 +19,11 @@ import com.oscar.agenda.database.asynctasks.ResponseAsyncTask;
 import com.oscar.agenda.database.entity.EventoVO;
 import com.oscar.agenda.database.helper.DatabaseErrors;
 import com.oscar.agenda.decorator.DecoratorEventDay;
-import com.oscar.agenda.dialog.AlertDialogHelper;
 import com.oscar.agenda.utils.Constantes;
-import com.oscar.agenda.utils.DateOperations;
-import com.oscar.agenda.utils.log.LogCat;
+import com.oscar.agenda.utils.date.CalendarDayOperations;
+import com.oscar.libutilities.utils.log.LogCat;
+import com.oscar.libutilities.utils.date.DateOperations;
+import com.oscar.libutilities.utils.dialog.AlertDialogHelper;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
@@ -112,7 +113,7 @@ public class CalendarioMensualActivity extends AppCompatActivity {
 
             public void onDateSelected(@NonNull MaterialCalendarView widget, @NonNull CalendarDay date, boolean selected) {
                 // Se cargan los eventos del día seleccionado
-                CalendarioMensualActivity.this.fechaSeleccionada = DateOperations.convert(date);
+                CalendarioMensualActivity.this.fechaSeleccionada = CalendarDayOperations.convert(date);
                 getEventos(CalendarioMensualActivity.this.fechaSeleccionada);
             }
         });
