@@ -8,8 +8,8 @@ import android.database.sqlite.SQLiteOpenHelper;
 import com.oscar.agenda.database.colums.ColumnasBD;
 import com.oscar.agenda.database.entity.EventoVO;
 import com.oscar.agenda.exception.DatabaseException;
-import com.oscar.libutilities.utils.log.LogCat;
 import com.oscar.libutilities.utils.date.DateOperations;
+import com.oscar.libutilities.utils.log.LogCat;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -215,6 +215,76 @@ public class EventHelper extends SQLiteOpenHelper {
         }
         return eventos;
     }
+
+
+
+    /**
+     * Recupera los eventos de la base de datos para una determinada fecha y hora desde
+     * @param fecha Calendar
+     * @return List<EventoVO>
+     * @throws DatabaseException
+     */
+    public List<EventoVO> getEventosFechaHoraDesde(Calendar fecha) throws DatabaseException {
+        List<EventoVO> eventos = new ArrayList<EventoVO>();
+        String fechaDesde = "";
+        String horaDesde  = "";
+        SQLiteDatabase db = null;
+        Cursor rs = null;
+
+        try {
+            LogCat.info("getEventosFechaHoraDesde() init");
+            fechaDesde = DateOperations.getFecha(fecha, DateOperations.FORMATO.DIA_MES_ANYO);
+            horaDesde  = DateOperations.getFecha(fecha, DateOperations.FORMATO.HORA_MINUTOS);
+
+
+            LogCat.info("getEventosFechaHoraDesde sFecha: " + fechaDesde);
+
+            String sql = "select _id,nombre,fecha_desde,hora_desde,fecha_hasta,hora_hasta,fecha_publicacion,hora_publicacion,recordatorio_1,recordatorio_2,recordatorio_2 from evento ".
+                    concat("where fecha_desde='").concat(fechaDesde).concat("'").concat(" and hora_desde='").concat(horaDesde).concat("' ").concat(" order by hora_desde asc,_id asc");
+
+            LogCat.debug("sql: " + sql);
+
+            db = getReadableDatabase();
+            rs = db.rawQuery(sql,null);
+
+            if(rs!=null && rs.getCount()>0 && rs.moveToFirst()) {
+                LogCat.debug("Numero eventos recuperadas: " + rs.getCount());
+
+                do {
+                    EventoVO evento = new EventoVO();
+
+                    evento.setId(rs.getInt(0));
+                    evento.setNombre(rs.getString(1));
+                    evento.setFechaDesde(rs.getString(2));
+                    evento.setHoraDesde(rs.getString(3));
+                    evento.setFechaHasta(rs.getString(4));
+                    evento.setHoraHasta(rs.getString(5));
+                    evento.setFechaPublicacion(rs.getString(6));
+                    evento.setRecordatorio1(rs.getString(7));
+                    evento.setRecordatorio2(rs.getString(8));
+                    evento.setRecordatorio3(rs.getString(9));
+                    eventos.add(evento);
+
+                } while(rs.moveToNext());
+
+            } else
+                LogCat.debug("No se han recuperados eventos para el dia " + fechaDesde + " y hora: " + horaDesde);
+
+            LogCat.info("getEventosFechaHoraDesde() end");
+
+        } catch(Exception e) {
+            e.printStackTrace();
+            throw new DatabaseException(DatabaseErrors.ERROR_RECUPERAR_EVENTOS,"Error al recuperar los eventos de fecha_desde ".concat(fechaDesde).concat(": ").concat(e.getMessage()));
+        } finally {
+            if(rs!=null) rs.close();
+            if(db!=null) db.close();
+        }
+        return eventos;
+    }
+
+
+
+
 
 
 

@@ -2,4 +2,6 @@
     <string name="app_name">libUtilities</string>
     <string name="botonAceptar">Aceptar</string>
     <string name="botonCancelar">Cancelar</string>
+    <string name="nuevoEvento">Nuevo evento</string>
+
 </resources>

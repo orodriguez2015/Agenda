@@ -4,11 +4,16 @@ import android.app.IntentService;
 import android.content.Intent;
 
 import com.oscar.agenda.activities.EdicionDetalleActivity;
+import com.oscar.agenda.database.entity.EventoVO;
+import com.oscar.agenda.database.helper.EventHelper;
 import com.oscar.agenda.utils.Constantes;
 import com.oscar.libutilities.utils.log.LogCat;
 import com.oscar.libutilities.utils.notification.NotificacionInfo;
 import com.oscar.libutilities.utils.notification.NotificationUtils;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -38,30 +43,12 @@ public class NotificacionEventoService extends IntentService {
     protected void onHandleIntent(Intent intent) {
 
         try {
-
-            Intent intentDestino = new Intent(getApplicationContext(), EdicionDetalleActivity.class);
-            NotificacionInfo info = new NotificacionInfo("Titulo","Tienes que ir a cargar",getApplicationContext(),intentDestino);
-            info.setIcon(android.R.mipmap.sym_def_app_icon);
-            
-            NotificationUtils.sendNotification(info);
-            //sendNotification();
             sendNotificationPerEvent();
-
-            // Se invoca al helper de BD directamente sin hacerlo a través de un AsynTask, ya
-            // que este última desde un IntentService no funciona
- /*
-                    EventHelper helper = new EventHelper(getApplicationContext());
-                    List<EventoVO> eventos = helper.getEventos(fecha);
-
-                    LogCat.debug("eventos: " + eventos);
-                    */
 
         } catch(Exception e) {
             e.printStackTrace();
         }
 
-
-        LogCat.debug("NotificacionEventoService.onHandleIntent <====");
     }
 
 
@@ -75,7 +62,40 @@ public class NotificacionEventoService extends IntentService {
             @Override
             public void run() {
 
-                LogCat.debug("Ejecución de timer ===>");
+            try {
+                LogCat.debug("NotificacionEventoService ejecución de timer ===>");
+
+                // Para la fecha actual se recuperan los eventos que puedan existir, para poder notificar al usuario
+                Calendar fecha = Calendar.getInstance();
+
+                SimpleDateFormat sf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+                LogCat.debug("NotificacionEventoService.Fecha para la que se notifican eventos: " + sf.format(fecha.getTime()));
+
+                EventHelper helper = new EventHelper(getApplicationContext());
+                List<EventoVO> eventos =  helper.getEventosFechaHoraDesde(fecha);
+
+                for(int i=0;eventos!=null && i<eventos.size();i++) {
+                    EventoVO evento = eventos.get(i);
+                    String nombreEvento = evento.getNombre();
+
+                    /** Envio de la notificación para el evento actual **/
+                    String descripcion = evento.getFechaDesde() + " " + evento.getHoraDesde();
+                    Intent intentDestino = new Intent(getApplicationContext(), EdicionDetalleActivity.class);
+
+                    NotificacionInfo info = new NotificacionInfo(nombreEvento,descripcion,getApplicationContext(),intentDestino);
+                    info.setIcon(android.R.mipmap.sym_def_app_icon);
+
+                    NotificationUtils.sendNotification(info,false);
+
+                }
+
+                LogCat.debug("NotificacionEventoService.Número de eventos recuperados: " + eventos.size());
+                LogCat.debug("NotificacionEventoService ejecución de timer <===");
+
+
+            } catch(Exception e) {
+                e.printStackTrace();
+            }
 
             }
         },0, Constantes.INTERVAL_TIMER_EVENT_NOTIFICATION);
