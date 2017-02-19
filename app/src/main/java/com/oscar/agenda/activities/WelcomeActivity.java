@@ -3,8 +3,10 @@ package com.oscar.agenda.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -15,31 +17,51 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 
-import com.oscar.agenda.adapter.EventosAdapter;
+import com.oscar.agenda.adapter.EventosMensualesAdapter;
 import com.oscar.agenda.database.asynctasks.GetEventosAsyncTask;
+import com.oscar.agenda.database.asynctasks.GetEventosMesAsyncTask;
 import com.oscar.agenda.database.asynctasks.ParamsAsyncTask;
 import com.oscar.agenda.database.asynctasks.ResponseAsyncTask;
 import com.oscar.agenda.database.entity.EventoVO;
-import com.oscar.libutilities.utils.dialog.AlertDialogHelper;
+import com.oscar.agenda.database.helper.DatabaseErrors;
+import com.oscar.agenda.decorator.DecoratorEventDay;
 import com.oscar.agenda.services.NotificacionEventoService;
 import com.oscar.agenda.utils.Constantes;
+import com.oscar.agenda.utils.date.CalendarDayOperations;
+import com.oscar.libutilities.utils.date.DateOperations;
+import com.oscar.libutilities.utils.dialog.AlertDialogHelper;
 import com.oscar.libutilities.utils.log.LogCat;
-import com.oscar.agenda.utils.toast.MessageUtils;
+import com.prolificinteractive.materialcalendarview.CalendarDay;
+import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
+import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
+import com.prolificinteractive.materialcalendarview.OnMonthChangedListener;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
 import agenda.oscar.com.agenda.R;
 
+import static agenda.oscar.com.agenda.R.id.calendarView;
+
+/**
+ * Actividad principal de la aplicación
+ */
 public class WelcomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private RecyclerView recycler = null;
     private RecyclerView.LayoutManager lManager = null;
-    private EventosAdapter adapter = null;
     private List<EventoVO> eventos = null;
     private NavigationView navigationView = null;
+
+    private MaterialCalendarView materialCalendarView = null;
+    private Calendar fechaSeleccionada = null;
+    private EventosMensualesAdapter adapter = null;
+    private RecyclerView recyclerEvents = null;
+    private TextView txtEventos = null;
 
     /**
      * Método onCreate
@@ -64,16 +86,38 @@ public class WelcomeActivity extends AppCompatActivity implements NavigationView
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        recycler = (RecyclerView) findViewById(R.id.recycler);
-        recycler.setHasFixedSize(true);
 
-        // Usar un administrador para LinearLayout
+        materialCalendarView = (MaterialCalendarView)findViewById(calendarView);
+        materialCalendarView.setSelectionMode(MaterialCalendarView.SELECTION_MODE_MULTIPLE);
+
+        txtEventos = (TextView)findViewById(R.id.txtEventosDia);
+        txtEventos.setText("");
+
+
+        // Se obtiene el RecyclerView en el que se mostrarán los eventos de una determinada fecha que ha sido
+        // seleccionada por le usuario en el MaterialCalendarView
+        recyclerEvents = (RecyclerView) findViewById(R.id.recyclerListadoEventos);
+        recyclerEvents.setHasFixedSize(true);
+
+        // Se crea un LinearLayoutManager para el RecyclerView
         lManager = new LinearLayoutManager(this);
-        recycler.setLayoutManager(lManager);
+        recyclerEvents.setLayoutManager(lManager);
+
 
         // Adaptador de eventos
-        adapter = new EventosAdapter(new ArrayList<EventoVO>(),getResources(),this);
-        recycler.setAdapter(adapter);
+        adapter = new EventosMensualesAdapter(new ArrayList<EventoVO>());
+        recyclerEvents.setAdapter(adapter);
+
+
+        // Listener para detectar una selección de un elemento del adapter
+        adapter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int pos =  recyclerEvents.getChildAdapterPosition(view);
+                cargarDetalleEvento(adapter.getItems().get(pos));
+            }
+        });
+
 
         FloatingActionButton fab = (FloatingActionButton)findViewById(R.id.floatingButtonNuevoEvento);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -83,74 +127,193 @@ public class WelcomeActivity extends AppCompatActivity implements NavigationView
             }
         });
 
+        /**
+         * Se lanza el servicio de notificaciones
+         */
         lanzarServicio();
-        //cargarEventosHoy();
+
+        /**
+         * Se marcan en el MaterialCalendarView los eventos existentes en el mes actual
+         */
+        marcarEventosCalendario(DateOperations.getActualMonth());
+
+        /**
+         * Configuración de los listener
+         */
+        configurarListener();
+
+        /**
+         * Añadir decorador para los días que tienen asociado algún evento
+         */
+        addDecoradorMaterialCalendarView();
+
     }
+
+
+    /**
+     * Configura los listener sobre los componentes de la interfaz de usuario
+     */
+    private void configurarListener() {
+
+        materialCalendarView.setSelectionColor(ContextCompat.getColor(getApplicationContext(),R.color.colorPrimaryDark));
+        // Se detecta si hay un cambio de fecha, hay que recuperar los eventos de ese día
+        materialCalendarView.setOnDateChangedListener(new OnDateSelectedListener() {
+
+            public void onDateSelected(@NonNull MaterialCalendarView widget, @NonNull CalendarDay date, boolean selected) {
+                // Se cargan los eventos del día seleccionado
+                WelcomeActivity.this.fechaSeleccionada = CalendarDayOperations.convert(date);
+
+                try {
+                    SimpleDateFormat sf = new SimpleDateFormat("dd/MM/yyyy");
+
+
+
+                    LogCat.debug("Fecha seleccionada " + sf.format(WelcomeActivity.this.fechaSeleccionada.getTime()));
+                    getEventos(WelcomeActivity.this.fechaSeleccionada);
+                }catch(Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        materialCalendarView.setOnMonthChangedListener(new OnMonthChangedListener() {
+            @Override
+            public void onMonthChanged(MaterialCalendarView widget, CalendarDay date) {
+                LogCat.debug("Se ha cambiado de mes "  + date.getMonth());
+            }
+        });
+    }
+
+
+    /**
+     * Añade un decorador al MaterialCalendarView para marcar con un punto los días del calendario
+     * que tienen asociado un evento
+     */
+    private void addDecoradorMaterialCalendarView() {
+        materialCalendarView.addDecorator(new DecoratorEventDay(getApplicationContext(),this.eventos));
+    }
+
+
+    /**
+     * Carga la actividad que muestra el detalle de un evento. Esta actividad
+     * también permite la edición del mismo
+     * @param evento EventoVO
+     */
+    private void cargarDetalleEvento(EventoVO evento) {
+        Intent intent = new Intent(WelcomeActivity.this,EdicionDetalleActivity.class);
+        intent.putExtra("evento",evento);
+        startActivityForResult(intent,Constantes.EDITAR_EVENTO);
+    }
+
+
+    /**
+     * Marca los días que tienen asociado algún evento
+     * @param mes Integer
+     */
+    private void marcarEventosCalendario(Integer mes) {
+        Calendar fechaActual = Calendar.getInstance();
+
+        // Se recupera los eventos del mes actual de la base de datos
+        ParamsAsyncTask params = new ParamsAsyncTask();
+        params.setContext(getApplicationContext());
+        params.setMes(mes);
+
+        try {
+            GetEventosMesAsyncTask task = new GetEventosMesAsyncTask();
+            task.execute(params);
+            ResponseAsyncTask response = task.get();
+
+            String message = null;
+            switch(response.getStatus()) {
+
+                case 0: {
+                    // Se ha recuperado los eventos de la BBDD
+                    eventos = response.getEventos();
+                    //marcarEventosCalendario();
+                    break;
+                }
+
+                case 1: {
+                    mostrarMensajeAdvertencia(getString(R.string.err_context_not_found));
+                    break;
+                }
+
+                case 2: {
+                    mostrarMensajeAdvertencia(getString(R.string.err_month_unknown));
+                    break;
+                }
+
+                case 3: {
+                    mostrarMensajeAdvertencia(getString(R.string.err_get_events_month));
+                    break;
+                }
+            }// switch
+
+        } catch(Exception e) {
+            e.printStackTrace();
+            mostrarMensajeAdvertencia(getString(R.string.err_get_events_month));
+        }
+    }
+
+
+    /**
+     * Operación que muestra un mensaje de advertencia
+     * @param mensaje String
+     */
+    private void mostrarMensajeAdvertencia(String mensaje) {
+        AlertDialogHelper.crearDialogoAlertaAdvertencia(getApplicationContext(),getString(R.string.atencion),mensaje).show();
+    }
+
+
+
+
+    /**
+     * Recupera los eventos de una determinada fecha
+     * @param fecha
+     */
+    private void getEventos(Calendar fecha) {
+
+        ParamsAsyncTask params = new ParamsAsyncTask();
+        params.setFecha(fecha);
+        params.setContext(getApplicationContext());
+        List<EventoVO> eventos = null;
+
+        try {
+            GetEventosAsyncTask task = new GetEventosAsyncTask();
+            task.execute(params);
+
+            ResponseAsyncTask res  = task.get();
+            if(res.getStatus().equals(DatabaseErrors.OK)) {
+                eventos = res.getEventos();
+
+                // Mensaje a mostrar en el caso de existir eventos
+                String mensaje = getString(R.string.noHayEventosDia) + " " + DateOperations.getFecha(fecha,DateOperations.FORMATO.DIA_MES_ANYO);
+                if(eventos.size()>0) {
+                    mensaje = getString(R.string.eventosDia) + " " + DateOperations.getFecha(fecha,DateOperations.FORMATO.DIA_MES_ANYO);
+                }
+                txtEventos.setText(mensaje);
+
+                // Se pasan los eventos al adapter
+                adapter.setItems(eventos);
+                adapter.notifyDataSetChanged();
+                recyclerEvents.setAdapter(adapter);
+
+            } else {
+                AlertDialogHelper.crearDialogoAlertaAdvertencia(getApplicationContext(),getString(R.string.atencion),getString(R.string.err_get_eventos_fechaactual)).show();
+            }
+
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 
 
     /**
      * Lanza el servicio de notificaciones una vez cargada la actividad
      */
     private void lanzarServicio() {
-
         startService(new Intent(this,NotificacionEventoService.class));
-
-    }
-
-    /**
-     * Carga en el Activity los eventos recuperados del día de hoy
-     */
-    public void cargarEventosHoy() {
-
-        ParamsAsyncTask params = new ParamsAsyncTask();
-        params.setContext(getApplicationContext());
-        params.setFecha(Calendar.getInstance());
-
-        try {
-            GetEventosAsyncTask task = new GetEventosAsyncTask();
-            task.execute(params);
-            ResponseAsyncTask res = task.get();
-
-            switch(res.getStatus()) {
-                case 0: {
-                    eventos = res.getEventos();
-
-                    for(int i=0;eventos!=null && i<eventos.size();i++) {
-                        LogCat.debug("===> Nombre: " + eventos.get(i).getNombre());
-                        LogCat.debug("===> Fecha desde: " + eventos.get(i).getFechaDesde());
-                        LogCat.debug("===> Hora desde: " + eventos.get(i).getHoraDesde());
-                        LogCat.debug("===> Fecha hasta: " + eventos.get(i).getFechaHasta());
-                        LogCat.debug("===> Hora hasta: " + eventos.get(i).getHoraHasta());
-                        LogCat.debug("===> Estado: " + eventos.get(i).getEstado());
-                        LogCat.debug("");
-                    }
-
-
-                    adapter = new EventosAdapter(eventos,getResources(),this);
-                    // Se notifica que ha cambiado  el contenido del adapter
-                    adapter.notifyDataSetChanged();
-                    recycler.setAdapter(adapter);
-                    LogCat.debug("Número de eventos: " + eventos.size());
-                    break;
-                }
-
-                case 1: {
-                    LogCat.debug("Contexto desconocido");
-                    MessageUtils.showToastDuracionCorta(getApplicationContext(),getString(R.string.err_context_not_found));
-                }
-
-                case 2: {
-                    LogCat.debug("Error al recuperar los eventos del dia actual de base de datos");
-                    MessageUtils.showToastDuracionCorta(getApplicationContext(),getString(R.string.err_recuperar_eventos_hoy));
-                }
-
-            }
-
-
-        } catch(Exception e) {
-            AlertDialogHelper.crearDialogoAlertaAdvertencia(getApplicationContext(),getString(R.string.atencion),getString(R.string.err_recuperar_eventos_hoy)).show();
-        }
-
     }
 
 
@@ -264,8 +427,9 @@ public class WelcomeActivity extends AppCompatActivity implements NavigationView
             switch (requestCode) {
 
                 case Constantes.NUEVO_EVENTO: {
-                    // Recargar las eventos para el día de hoy
-                    this.cargarEventosHoy();
+                    // Recargar el calendario
+                    marcarEventosCalendario(DateOperations.getActualMonth());
+                    addDecoradorMaterialCalendarView();
                     break;
                 }
 

@@ -13,16 +13,57 @@
     tools:showIn="@layout/app_bar_welcome">
 
 
-    <android.support.v7.widget.RecyclerView
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/recycler"
+    <!-- Calendario -->
+    <com.prolificinteractive.materialcalendarview.MaterialCalendarView
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/calendarView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:mcv_showOtherDates="all"
+        app:mcv_selectionColor="#00F"
+        app:theme="@style/AlertDialog.AppCompat"
+        android:layout_alignParentEnd="true"
+        app:mcv_tileHeight="30dp"/>
+
+    <TextView
+        android:id="@+id/txtEventosDia"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Eventos del día"
+        android:layout_alignBottom="@id/calendarView"
+        android:layout_marginBottom="-28dp"
+        android:textStyle="bold"
+        android:textSize="14dp"
+        />
+
+
+
+    <!-- ScrollView en el que se muestran los eventos de un día determinado -->
+    <ScrollView
+        android:id="@+id/scrollViewEventosMensuales"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="3dp"
-        android:scrollbars="vertical">
+        android:layout_below="@+id/calendarView"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="25dp">
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:showDividers="beginning">
 
-    </android.support.v7.widget.RecyclerView>
+            <!-- RecyclerView para mostrar los eventos de un día seleccionado por el usuario -->
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recyclerListadoEventos"
+                android:layout_width="match_parent"
+                android:layout_height="193dp"
+                android:padding="3dp"
+                android:scrollbars="vertical">
 
+            </android.support.v7.widget.RecyclerView>
+
+        </LinearLayout>
+    </ScrollView>
 
 </RelativeLayout>

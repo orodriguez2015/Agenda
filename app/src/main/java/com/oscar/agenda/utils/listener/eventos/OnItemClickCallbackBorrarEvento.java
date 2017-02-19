@@ -66,7 +66,7 @@ public class OnItemClickCallbackBorrarEvento implements OnItemClickListener.OnIt
 
                             if(res.getStatus()==0) {
                                 // Si se ha eliminado ,hay que actualizar el contenido de la actividad principal
-                               actividad.cargarEventosHoy();
+                             //  actividad.cargarEventosHoy();
                             } else {
                                 AlertDialogHelper.crearDialogoAlertaAdvertencia(actividad,actividad.getString(R.string.atencion),actividad.getString(R.string.err_delete_evento));
                             }
