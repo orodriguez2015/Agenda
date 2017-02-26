@@ -38,7 +38,6 @@ import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
 import com.prolificinteractive.materialcalendarview.OnMonthChangedListener;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -119,6 +118,9 @@ public class WelcomeActivity extends AppCompatActivity implements NavigationView
         });
 
 
+        /**
+         * Botón flotante
+         */
         FloatingActionButton fab = (FloatingActionButton)findViewById(R.id.floatingButtonNuevoEvento);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -138,14 +140,11 @@ public class WelcomeActivity extends AppCompatActivity implements NavigationView
         marcarEventosCalendario(DateOperations.getActualMonth());
 
         /**
-         * Configuración de los listener
+         * Configuración de los listener del MaterialCalendarView
          */
         configurarListener();
 
-        /**
-         * Añadir decorador para los días que tienen asociado algún evento
-         */
-        addDecoradorMaterialCalendarView();
+        getEventos(Calendar.getInstance());
 
     }
 
@@ -164,12 +163,8 @@ public class WelcomeActivity extends AppCompatActivity implements NavigationView
                 WelcomeActivity.this.fechaSeleccionada = CalendarDayOperations.convert(date);
 
                 try {
-                    SimpleDateFormat sf = new SimpleDateFormat("dd/MM/yyyy");
-
-
-
-                    LogCat.debug("Fecha seleccionada " + sf.format(WelcomeActivity.this.fechaSeleccionada.getTime()));
                     getEventos(WelcomeActivity.this.fechaSeleccionada);
+
                 }catch(Exception e) {
                     e.printStackTrace();
                 }
@@ -227,9 +222,16 @@ public class WelcomeActivity extends AppCompatActivity implements NavigationView
             switch(response.getStatus()) {
 
                 case 0: {
-                    // Se ha recuperado los eventos de la BBDD
+
+                    /**
+                     * Se recuperan los eventos del mes de la BBDD
+                     */
                     eventos = response.getEventos();
-                    //marcarEventosCalendario();
+
+                    /**
+                     * Añadir decorador para los días que tienen asociado algún evento
+                     */
+                    addDecoradorMaterialCalendarView();
                     break;
                 }
 
@@ -427,9 +429,16 @@ public class WelcomeActivity extends AppCompatActivity implements NavigationView
             switch (requestCode) {
 
                 case Constantes.NUEVO_EVENTO: {
-                    // Recargar el calendario
+                    // Recargar el calendario para marcar los días que tienen eventos
                     marcarEventosCalendario(DateOperations.getActualMonth());
-                    addDecoradorMaterialCalendarView();
+
+                    // Si con anterioridad el usuario ha seleccionado una fecha, entonces, hay que recargar los eventos de dicha fecha, por si el nuevo
+                    // evento está asociado a la misma
+                    if(this.fechaSeleccionada!=null) {
+                        getEventos(this.fechaSeleccionada);
+                    }
+
+
                     break;
                 }
 

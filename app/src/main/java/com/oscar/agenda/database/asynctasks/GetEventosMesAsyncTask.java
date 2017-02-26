@@ -46,7 +46,9 @@ public class GetEventosMesAsyncTask extends AsyncTask<ParamsAsyncTask,Void,Respo
             try {
                 EventHelper helper = new EventHelper(context);
                 // Se recuperan los eventos del día de hoy
-                res.setEventos(helper.getEventosMes(mes));
+                //res.setEventos(helper.getEventosMes(mes));
+                res.setEventos(helper.getSoloFechaDesdeEventosMes(mes));
+
                 res.setStatus(0);
                 res.setDescStatus("OK");
 

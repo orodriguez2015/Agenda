@@ -217,6 +217,53 @@ public class EventHelper extends SQLiteOpenHelper {
     }
 
 
+    /**
+     * Lee todos los eventos de un determinado mes, y recuperar solamente la fecha_desde del evento, siempre y cuando pertenezca al mes
+     * indicado por parámetro
+     * @param mes Número de mes
+     * @return List<EventoVO>
+     * @throws DatabaseException
+     */
+    public List<EventoVO> getSoloFechaDesdeEventosMes(Integer mes) throws DatabaseException {
+        List<EventoVO> eventos = new ArrayList<EventoVO>();
+        String sFecha = "";
+        SQLiteDatabase db = null;
+        Cursor rs = null;
+
+        try {
+            LogCat.info("getSoloFechaDesdeEventosMes() init");
+
+            String sql = "select _id,fecha_desde from evento where fecha_desde like '%".concat(mes.toString()).concat("%'");
+            LogCat.debug("sql: " + sql);
+
+            db = getReadableDatabase();
+            rs = db.rawQuery(sql,null);
+
+            if(rs!=null && rs.getCount()>0 && rs.moveToFirst()) {
+                LogCat.debug("Numero eventos recuperadas: " + rs.getCount());
+
+                do {
+                    EventoVO evento = new EventoVO();
+                    evento.setId(rs.getInt(0));
+                    evento.setFechaDesde(rs.getString(1));
+                    eventos.add(evento);
+                } while(rs.moveToNext());
+
+            }
+
+            LogCat.info("getSoloFechaDesdeEventosMes() end");
+
+        } catch(Exception e) {
+            e.printStackTrace();
+            throw new DatabaseException(DatabaseErrors.ERROR_RECUPERAR_EVENTOS_MES,"Error al recuperar los eventos del mes ".concat(mes.toString()).concat(": ").concat(e.getMessage()));
+        } finally {
+            if(rs!=null) rs.close();
+            if(db!=null) db.close();
+        }
+        return eventos;
+    }
+
+
 
     /**
      * Recupera los eventos de la base de datos para una determinada fecha y hora desde

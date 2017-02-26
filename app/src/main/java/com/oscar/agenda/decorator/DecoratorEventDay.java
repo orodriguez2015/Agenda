@@ -55,6 +55,7 @@ public class DecoratorEventDay implements DayViewDecorator {
 
         int color = ContextCompat.getColor(context, R.color.darkgreen);
         view.addSpan(new DotSpanTop(7.5f,color));
+
     }
 
 }

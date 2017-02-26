@@ -4,10 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="2dp"
-    android:paddingLeft="2dp"
-    android:paddingRight="2dp"
-    android:paddingTop="2dp"
+    android:paddingBottom="2sp"
+    android:paddingLeft="2sp"
+    android:paddingRight="2sp"
+    android:paddingTop="2sp"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.oscar.agenda.activities.WelcomeActivity"
     tools:showIn="@layout/app_bar_welcome">
@@ -23,7 +23,7 @@
         app:mcv_selectionColor="#00F"
         app:theme="@style/AlertDialog.AppCompat"
         android:layout_alignParentEnd="true"
-        app:mcv_tileHeight="30dp"/>
+        app:mcv_tileHeight="30sp"/>
 
     <TextView
         android:id="@+id/txtEventosDia"
@@ -31,9 +31,9 @@
         android:layout_height="wrap_content"
         android:text="Eventos del día"
         android:layout_alignBottom="@id/calendarView"
-        android:layout_marginBottom="-28dp"
+        android:layout_marginBottom="-28sp"
         android:textStyle="bold"
-        android:textSize="14dp"
+        android:textSize="14sp"
         />
 
 
@@ -41,29 +41,31 @@
     <!-- ScrollView en el que se muestran los eventos de un día determinado -->
     <ScrollView
         android:id="@+id/scrollViewEventosMensuales"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_below="@+id/calendarView"
         android:layout_alignParentStart="true"
-        android:layout_marginTop="25dp">
+        android:layout_marginTop="25sp"
+        android:scrollIndicators="right"
+        android:verticalScrollbarPosition="right"
+        android:scrollbarThumbVertical="@drawable/bordenegro">
 
-        <LinearLayout
+
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:showDividers="beginning">
+            android:layout_height="wrap_content">
 
             <!-- RecyclerView para mostrar los eventos de un día seleccionado por el usuario -->
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/recyclerListadoEventos"
                 android:layout_width="match_parent"
-                android:layout_height="193dp"
-                android:padding="3dp"
+                android:layout_height="match_parent"
+                android:padding="3sp"
                 android:scrollbars="vertical">
 
             </android.support.v7.widget.RecyclerView>
+        </RelativeLayout>
 
-        </LinearLayout>
     </ScrollView>
 
 </RelativeLayout>

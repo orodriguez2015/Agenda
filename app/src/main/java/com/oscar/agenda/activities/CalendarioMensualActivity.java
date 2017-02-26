@@ -97,8 +97,18 @@ public class CalendarioMensualActivity extends AppCompatActivity {
         marcarEventosCalendario(DateOperations.getActualMonth());
         // Configuración de los listener
         configurarListener();
+        // Recuperar los eventos del día actual y mostrarlos en la agenda
 
-        addDecoradorMaterialCalendarView();
+        Calendar c = Calendar.getInstance();
+        c.clear(Calendar.HOUR_OF_DAY);
+        c.clear(Calendar.MINUTE);
+        c.clear(Calendar.SECOND);
+        c.clear(Calendar.MILLISECOND);
+        getEventos(c);
+        //DateOperations.getFecha(Calendar.getInstance(), DateOperations.FORMATO.DIA_MES_ANYO);
+
+
+
     }
 
 
@@ -127,6 +137,9 @@ public class CalendarioMensualActivity extends AppCompatActivity {
     }
 
 
+    /**
+     * Añade al MaterialCalendarView el decorador para los días del calendario que tienen asociado un evento
+     */
     private void addDecoradorMaterialCalendarView() {
         materialCalendarView.addDecorator(new DecoratorEventDay(getApplicationContext(),this.eventos));
     }
@@ -146,7 +159,7 @@ public class CalendarioMensualActivity extends AppCompatActivity {
 
     /**
      * Recupera los eventos de una determinada fecha
-     * @param fecha
+     * @param fecha Calendar
      */
     private void getEventos(Calendar fecha) {
 
@@ -210,7 +223,8 @@ public class CalendarioMensualActivity extends AppCompatActivity {
                 case 0: {
                     // Se ha recuperado los eventos de la BBDD
                     eventos = response.getEventos();
-                    //marcarEventosCalendario();
+                    // Se añade el decorador al componente MaterialCalendarView
+                    addDecoradorMaterialCalendarView();
                     break;
                 }
 
@@ -233,16 +247,6 @@ public class CalendarioMensualActivity extends AppCompatActivity {
         } catch(Exception e) {
             e.printStackTrace();
             mostrarMensajeAdvertencia(getString(R.string.err_get_events_month));
-        }
-    }
-
-
-    /**
-     * Se marca en el MaterialCalendarView los días en los que hay eventos
-     */
-    private void marcarEventosCalendario() {
-        for(int i=0;eventos!=null && i<eventos.size();i++) {
-            materialCalendarView.setDateSelected(eventos.get(i).getFechaDesdeCalendar(), true);
         }
     }
 
