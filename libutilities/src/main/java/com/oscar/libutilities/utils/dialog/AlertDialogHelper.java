@@ -9,6 +9,7 @@ import utilities.android.oscar.com.libutilities.R;
 
 
 /**
+ * Clase AlertDialogHelper con operaciones que permite mostrar un cuadro de diálogo de confirmación, de advertencia
  * Created by oscar on 27/08/16.
  */
 public class AlertDialogHelper  {
@@ -46,7 +47,6 @@ public class AlertDialogHelper  {
      * @param mensaje Mensaje a mostrar al usuario
      * @return AlertDialog
      */
-    //public static AlertDialog crearDialogoAlertaAdvertencia(final Activity activity, String titulo, String mensaje) {
     public static AlertDialog crearDialogoAlertaAdvertencia(final Context context, String titulo, String mensaje) {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(context);

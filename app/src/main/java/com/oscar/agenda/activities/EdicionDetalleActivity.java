@@ -17,8 +17,11 @@ import com.oscar.agenda.database.asynctasks.ResponseAsyncTask;
 import com.oscar.agenda.database.entity.EventoVO;
 import com.oscar.agenda.utils.ActivityUtils;
 import com.oscar.agenda.utils.Constantes;
-import com.oscar.libutilities.utils.log.LogCat;
+import com.oscar.agenda.utils.listener.api.EliminarEventoOnClickListener;
+import com.oscar.agenda.utils.listener.api.OnClickListenerBotonGenerico;
 import com.oscar.libutilities.utils.date.DateOperations;
+import com.oscar.libutilities.utils.dialog.AlertDialogHelper;
+import com.oscar.libutilities.utils.log.LogCat;
 
 import java.util.Calendar;
 
@@ -33,6 +36,7 @@ public class EdicionDetalleActivity extends AppCompatActivity {
 
     private Button botonGrabarEvento = null;
     private Button botonCancelarEvento = null;
+    private Button botonEliminarEvento = null;
     private EditText nombreEvento = null;
     private TextView fechaDesde   = null;
     private TextView horaDesde    = null;
@@ -68,6 +72,7 @@ public class EdicionDetalleActivity extends AppCompatActivity {
         horaHasta           = (TextView)findViewById(R.id.horaHasta);
         botonGrabarEvento   = (Button)findViewById(R.id.btnGrabarEvento);
         botonCancelarEvento = (Button)findViewById(R.id.btnCancelarEvento);
+        botonEliminarEvento = (Button)findViewById(R.id.btnEliminarEvento);
 
         cargarEvento();
         configurarListener();
@@ -136,6 +141,20 @@ public class EdicionDetalleActivity extends AppCompatActivity {
                 // Ocultar el teclado
                 ActivityUtils.closeSoftKeyBoard(EdicionDetalleActivity.this);
                 finish();
+            }
+        });
+
+
+        /**
+         * Evento asociado al botón de eliminar un evento
+         */
+        botonEliminarEvento.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                LogCat.debug("Pulsado botón eliminar");
+                AlertDialogHelper.crearDialogoAlertaConfirmacion(EdicionDetalleActivity.this, getString(R.string.atencion), getString(R.string.pregunta_eliminar_evento) + " " + evento.getNombre() + Constantes.INTERROGANTE,
+                        new EliminarEventoOnClickListener(EdicionDetalleActivity.this,evento),new OnClickListenerBotonGenerico()).show();
+
             }
         });
 

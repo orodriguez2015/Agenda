@@ -21,6 +21,7 @@
     <string name="descriptionSerie">Descripción</string>
     <string name="btnGuardar">Guardar</string>
     <string name="btnCancelar">Cancelar</string>
+    <string name="btnEliminar">Eliminar</string>
     <string name="aceptar">Aceptar</string>
     <string name="cancelar">Cancelar</string>
     <string name="campo_obligatorio">Campo obligatorio</string>
@@ -34,6 +35,7 @@
     <string name="eventosDia">Eventos del día</string>
     <string name="noHayEventosDia">No hay eventos disponibles el</string>
 
+    <string name="error">Error</string>
 
     <string name="pregunta_eliminar_evento">¿Desea eliminar el evento</string>
     <string name="err_unknown_event">Datos del evento desconocida</string>
@@ -54,6 +56,8 @@
     <string name="title_activity_nueva_serie">Nueva Serie</string>
     <string name="serie_grabada">La serie ha sido dada de alta correctamente</string>
     <string name="err_get_eventos_fechaactual">Se ha producido un error al recuperar los eventos de la fecha seleccionada</string>
+
+
 
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>

@@ -61,7 +61,6 @@ public class NuevoEvento2Activity extends AppCompatActivity {
 
 
         final CollapsingToolbarLayout collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.toolbar_layout);
-        //collapsingToolbarLayout.setTitle(getString(R.string.eventoNuevo));
 
         // Se obtiene el AppBarLayout para detectar cuando está "collapsed"
         AppBarLayout appBarLayout = (AppBarLayout) findViewById(R.id.app_bar);

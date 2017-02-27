@@ -144,6 +144,9 @@ public class WelcomeActivity extends AppCompatActivity implements NavigationView
          */
         configurarListener();
 
+        /**
+         * Se recuperan los eventos del día actual
+         */
         getEventos(Calendar.getInstance());
 
     }
@@ -381,7 +384,6 @@ public class WelcomeActivity extends AppCompatActivity implements NavigationView
         switch(id) {
             case R.id.nav_calendarioMes: {
                 lanzarActividadCalendarioMensual();
-                //lanzarActividadEditar();
                 break;
             }
 
@@ -437,8 +439,13 @@ public class WelcomeActivity extends AppCompatActivity implements NavigationView
                     if(this.fechaSeleccionada!=null) {
                         getEventos(this.fechaSeleccionada);
                     }
+                    break;
+                }
 
-
+                case Constantes.EDITAR_EVENTO: {
+                    // Si se ha editado/eliminado un evento, se recargan los eventos de la fecha relacionada
+                    
+                    getEventos(fechaSeleccionada);
                     break;
                 }
 
