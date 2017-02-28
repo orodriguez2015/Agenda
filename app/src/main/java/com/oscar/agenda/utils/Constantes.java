@@ -15,4 +15,5 @@ public class Constantes {
     public final static String INTERROGANTE = "?";
 
     public final static Integer INTERVAL_TIMER_EVENT_NOTIFICATION = 60000;
+    public final static String PARAM_FECHA_INTENT = "fechaSeleccionada";
 }

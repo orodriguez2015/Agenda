@@ -163,13 +163,17 @@ public class WelcomeActivity extends AppCompatActivity implements NavigationView
 
             public void onDateSelected(@NonNull MaterialCalendarView widget, @NonNull CalendarDay date, boolean selected) {
                 // Se cargan los eventos del día seleccionado
-                WelcomeActivity.this.fechaSeleccionada = CalendarDayOperations.convert(date);
 
-                try {
-                    getEventos(WelcomeActivity.this.fechaSeleccionada);
+                if(selected) {
 
-                }catch(Exception e) {
-                    e.printStackTrace();
+                    try {
+                        WelcomeActivity.this.fechaSeleccionada = CalendarDayOperations.convert(date);
+                        getEventos(WelcomeActivity.this.fechaSeleccionada);
+                    }catch(Exception e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    WelcomeActivity.this.fechaSeleccionada = null;
                 }
             }
         });
@@ -405,6 +409,13 @@ public class WelcomeActivity extends AppCompatActivity implements NavigationView
      */
     private void lanzarActividadNuevoEvento() {
         Intent intent = new Intent(WelcomeActivity.this,NuevoEvento2Activity.class);
+
+        if(this.fechaSeleccionada!=null) {
+            LogCat.debug("   ====> lanzarActividadNuevoEvento hay fecha seleccionada");
+            // Se pasa la fecha seleccionada al activity de alta de evento, para que tenga en cuenta
+            intent.putExtra("fechaSeleccionada",this.fechaSeleccionada);
+        }
+
         startActivityForResult(intent, Constantes.NUEVO_EVENTO);
     }
 
@@ -444,8 +455,9 @@ public class WelcomeActivity extends AppCompatActivity implements NavigationView
 
                 case Constantes.EDITAR_EVENTO: {
                     // Si se ha editado/eliminado un evento, se recargan los eventos de la fecha relacionada
-                    
-                    getEventos(fechaSeleccionada);
+                    if(fechaSeleccionada!=null) {
+                        getEventos(fechaSeleccionada);
+                    }
                     break;
                 }
 

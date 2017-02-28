@@ -18,9 +18,10 @@ import com.oscar.agenda.database.asynctasks.ResponseAsyncTask;
 import com.oscar.agenda.database.asynctasks.SaveEventAsyncTask;
 import com.oscar.agenda.database.entity.EventoVO;
 import com.oscar.agenda.utils.ActivityUtils;
-import com.oscar.libutilities.utils.log.LogCat;
+import com.oscar.agenda.utils.Constantes;
 import com.oscar.libutilities.utils.date.DateOperations;
 import com.oscar.libutilities.utils.dialog.AlertDialogHelper;
+import com.oscar.libutilities.utils.log.LogCat;
 
 import java.util.Calendar;
 
@@ -67,7 +68,6 @@ public class NuevoEvento2Activity extends AppCompatActivity {
         appBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
             @Override
             public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
-                LogCat.debug(" =============> verticalOffset:: " + verticalOffset);
 
                 if (verticalOffset == 0) {
                     // AppBarLayout extendida
@@ -185,17 +185,28 @@ public class NuevoEvento2Activity extends AppCompatActivity {
      * Carga los datos por defecto del formulario
      */
     private void cargarFormularioDefecto() {
+        Calendar momentoActual = Calendar.getInstance();
+        Bundle bundle        = getIntent().getExtras();
+
+        Calendar fecha = null;
+        Calendar fechaEnviada = null;
+        if(bundle!=null && bundle.getSerializable(Constantes.PARAM_FECHA_INTENT)!=null) {
+            fechaEnviada = (Calendar)bundle.getSerializable(Constantes.PARAM_FECHA_INTENT);
+            DateOperations.includeActualHour(fechaEnviada);
+        }
+
+        fecha = fechaEnviada!=null?fechaEnviada:momentoActual;
+
 
         // Se obtiene la fecha y hora desde
-        Calendar c = Calendar.getInstance();
-        String fechaActual = DateOperations.getFecha(c,DateOperations.FORMATO.DIA_MES_ANYO);
-        String horaActual  = DateOperations.getFecha(c,DateOperations.FORMATO.HORA_MINUTOS);
+        String fechaActual = DateOperations.getFecha(fecha,DateOperations.FORMATO.DIA_MES_ANYO);
+        String horaActual  = DateOperations.getFecha(momentoActual,DateOperations.FORMATO.HORA_MINUTOS);
 
         fechaDesde.setText(fechaActual);
         horaDesde.setText(horaActual);
 
         // Se obtiene la fecha y hora hasta
-        Calendar cHasta = DateOperations.addHourToCalendar(c,1);
+        Calendar cHasta = DateOperations.addHourToCalendar(fecha,1);
         String sfechaHasta = DateOperations.getFecha(cHasta,DateOperations.FORMATO.DIA_MES_ANYO);
         String shoraHasta = DateOperations.getFecha(cHasta,DateOperations.FORMATO.HORA_MINUTOS);
 

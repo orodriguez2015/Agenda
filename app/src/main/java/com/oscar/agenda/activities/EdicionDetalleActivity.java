@@ -2,6 +2,8 @@ package com.oscar.agenda.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.AppBarLayout;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -57,14 +59,32 @@ public class EdicionDetalleActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        // Se habilita el botón de atrás (En el AndroidManifest hay que poner la actividad a la que vuelve hacia
-        // atrás android:parentActivityName="com.oscar.agenda.activities.WelcomeActivity")
+        // Se habilita el botón de atrás (En el AndroidManifest hay que poner la actividad a la que vuelve hacia atrás
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setTitle("");
 
 
+        final CollapsingToolbarLayout collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.toolbar_layout);
+
+        // Se obtiene el AppBarLayout para detectar cuando está "collapsed"
+        AppBarLayout appBarLayout = (AppBarLayout) findViewById(R.id.app_bar);
+        appBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
+            @Override
+            public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
+
+                if (verticalOffset == 0) {
+                    // AppBarLayout extendida
+                    collapsingToolbarLayout.setTitle("");
+                } else if (Math.abs(verticalOffset) >= appBarLayout.getTotalScrollRange()) {
+                    // AppBarLayout colapsada
+                    collapsingToolbarLayout.setTitle(getString(R.string.edicionEvento));
+                }
+            }
+        });
+
         ViewCompat.setTransitionName(findViewById(R.id.app_bar),"");
+
         nombreEvento        = (EditText)findViewById(R.id.nombreEvento);
         fechaDesde          = (TextView)findViewById(R.id.fechaDesde);
         horaDesde           = (TextView)findViewById(R.id.horaDesde);
@@ -107,11 +127,6 @@ public class EdicionDetalleActivity extends AppCompatActivity {
             this.horaHasta.setText(evento.getHoraHasta());
         }
 
-
-
-        LogCat.debug("nombre : " + evento.getNombre());
-        LogCat.debug("fecha desde : " + evento.getFechaDesde());
-        LogCat.debug("hora desde : " + evento.getHoraDesde());
     }
 
 

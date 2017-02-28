@@ -246,4 +246,26 @@ public class DateOperations {
         return salida;
     }
 
+
+    /**
+     * Permite añadir la hora actual a un Calendar que se pasa como parámetro
+     * @param param Calendar sobre el que se añade la hora actual
+     * @return Calendar
+     */
+    public static void includeActualHour(Calendar param) {
+        Calendar actual = Calendar.getInstance();
+
+        try {
+            param.set(Calendar.HOUR_OF_DAY,actual.get(Calendar.HOUR_OF_DAY));
+            param.set(Calendar.MINUTE,actual.get(Calendar.MINUTE));
+            param.set(Calendar.SECOND,actual.get(Calendar.SECOND));
+            param.set(Calendar.MILLISECOND,actual.get(Calendar.MILLISECOND));
+
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+
 }
